@@ -59,7 +59,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
             }
             else
             {
-                throw new CustomDataBaseException($"Computer with id {id} don't exist");
+                throw new CustomNoContentException($"Computer with id {id} don't exist");
             }
         }
 
@@ -73,7 +73,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
             }
             else
             {
-                throw new CustomDataBaseException($"Computer with name '{computerName}' and serial number '{computerSerialNumber}' don't exist");
+                throw new CustomNoContentException($"Computer with name '{computerName}' and serial number '{computerSerialNumber}' don't exist");
             }
         }
         #endregion
@@ -101,7 +101,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
             }
             else
             {
-                throw new CustomDataBaseException($"Computer with id {computer.Id} don't exist");
+                throw new CustomNoContentException($"Computer with id {computer.Id} don't exist");
             }
         }
         #endregion
@@ -118,7 +118,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
             }
             else
             {
-                throw new CustomDataBaseException($"Computer with id {id} don't exist");
+                throw new CustomNoContentException($"Computer with id {id} don't exist");
             }
         }
         #endregion

@@ -1,5 +1,6 @@
-﻿using Atlas_Monitoring.Core.Models.Database;
-using Atlas_Monitoring.Core.Models.Internal;
+﻿using Atlas_Monitoring.Core.Interface.Application;
+using Atlas_Monitoring.Core.Models.ViewModels;
+using Atlas_Monitoring.CustomException;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Atlas_Monitoring.Controllers
@@ -9,122 +10,129 @@ namespace Atlas_Monitoring.Controllers
     public class ComputersController : ControllerBase
     {
         #region Properties
-
+        private readonly IComputerRepository _computerRepository;
         #endregion
 
         #region Constructor
-
+        public ComputersController(IComputerRepository computerRepository)
+        {
+            _computerRepository = computerRepository;
+        }
         #endregion
 
         #region Publics Methods
         #region Create
         [HttpPost]
-        public async Task<ActionResult<Device>> AddNewComputer(Device computer)
+        public async Task<ActionResult<ComputerReadViewModel>> AddNewComputer(ComputerWriteViewModel newComputer)
         {
-            //_context.TodoItems.Add(todoItem);
-            //await _context.SaveChangesAsync();
+            try
+            {
+                ComputerReadViewModel computerDatabase = await _computerRepository.AddComputer(newComputer);
 
-            //    return CreatedAtAction("PostTodoItem", new { id = todoItem.Id }, todoItem);
-            return CreatedAtAction(nameof(AddNewComputer), new { id = computer.Id }, computer);
+                return CreatedAtAction(nameof(AddNewComputer), new { id = computerDatabase.Id }, computerDatabase);
+            }
+            catch (CustomModelException ex)
+            {
+                return Problem(detail: ex.Message, statusCode: 500);
+            }
+            catch(Exception ex)
+            {
+                return Problem(detail: "Internal Exception", statusCode: 500);
+            }
         }
         #endregion
 
         #region Read
         [HttpGet("GetAll")]
-        public async Task<ActionResult<List<Device>>> GetAllComputers()
+        public async Task<ActionResult<List<ComputerReadViewModel>>> GetAllComputers()
         {
-            List<Device> computers = new()
+            try
             {
-                new()
-                {
-                    Id = Guid.NewGuid(),
-                    DeviceStatus = DeviceStatus.InProduction,
-                    DeviceType = DeviceType.Computer,
-                    Name = "MYCOMPUTER1",
-                    Ip = "192.168.1.10",
-                    Domain = "WORKGROUP",
-                    MaxRam = 16000,
-                    NumberOfLogicalProcessors = 16,
-                    OS = "Windows",
-                    OSVersion = "Windows 10 20H2",
-                    UserName = "test",
-                    DateAdd = DateTime.Now.AddDays(-30),
-                    DateUpdated = DateTime.Now.AddDays(-16),
-                }
-            };
-
-            return computers;
+                return Ok(await _computerRepository.GetAllComputer());
+            }
+            catch (CustomNoContentException ex)
+            {
+                return NoContent();
+            }
+            catch (CustomModelException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: "Internal Exception", statusCode: 500);
+            }
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Device>> GetComputerById(Guid id)
+        public async Task<ActionResult<ComputerReadViewModel>> GetComputerById(Guid id)
         {
-            Device computer = new()
+            try
             {
-                Id = Guid.NewGuid(),
-                DeviceStatus = DeviceStatus.InProduction,
-                DeviceType = DeviceType.Computer,
-                Name = "MYCOMPUTER1",
-                Ip = "192.168.1.10",
-                Domain = "WORKGROUP",
-                MaxRam = 16000,
-                NumberOfLogicalProcessors = 16,
-                OS = "Windows",
-                OSVersion = "Windows 10 20H2",
-                UserName = "test",
-                DateAdd = DateTime.Now.AddDays(-30),
-                DateUpdated = DateTime.Now.AddDays(-16),
-            };
-
-            return computer;
+                return Ok(await _computerRepository.GetOneComputerById(id));
+            }
+            catch (CustomNoContentException ex)
+            {
+                return NoContent();
+            }
+            catch (CustomModelException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: "Internal Exception", statusCode: 500);
+            }
         }
         #endregion
 
         #region Update
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(Guid id, Device computer)
+        public async Task<ActionResult<ComputerReadViewModel>> UpdateComputer(Guid id, ComputerWriteViewModel computer)
         {
-            if (id != computer.Id)
+            try
             {
-                return BadRequest();
+                if (id != computer.Id) { throw new CustomModelException("Id don't match !"); }
+
+                return Ok(await _computerRepository.UpdateComputer(computer));
             }
-
-            //_context.Entry(todoItem).State = EntityState.Modified;
-
-            //try
-            //{
-            //    await _context.SaveChangesAsync();
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-            //    if (!TodoItemExists(id))
-            //    {
-            //        return NotFound();
-            //    }
-            //    else
-            //    {
-            //        throw;
-            //    }
-            //}
-
-            return NoContent();
+            catch (CustomNoContentException ex)
+            {
+                return NoContent();
+            }
+            catch (CustomModelException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: "Internal Exception", statusCode: 500);
+            }
         }
         #endregion
 
         #region Delete
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTodoItem(Guid id)
+        public async Task<ActionResult> DeleteComputer(Guid id)
         {
-            //var todoItem = await _context.TodoItems.FindAsync(id);
-            //if (todoItem == null)
-            //{
-            //    return NotFound();
-            //}
+            try
+            {
+                await _computerRepository.DeleteComputer(id);
 
-            //_context.TodoItems.Remove(todoItem);
-            //await _context.SaveChangesAsync();
-
-            return NoContent();
+                return NoContent();
+            }
+            catch (CustomNoContentException ex)
+            {
+                return NoContent();
+            }
+            catch (CustomModelException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: "Internal Exception", statusCode: 500);
+            }
         }
         #endregion
         #endregion

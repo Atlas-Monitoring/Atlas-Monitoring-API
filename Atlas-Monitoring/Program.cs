@@ -1,4 +1,7 @@
 using Atlas_Monitoring.Core.Infrastructure.DataBases;
+using Atlas_Monitoring.Core.Infrastructure.DataLayers;
+using Atlas_Monitoring.Core.Interface.Application;
+using Atlas_Monitoring.Core.Interface.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,20 +17,20 @@ builder.Services.AddDbContext<DefaultDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultContext"), serverVersion: ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultContext")));
 });
 
+//Scope DataLayer interface
+builder.Services.AddScoped<IComputerDataLayer, ComputerDataLayer>();
+
+//Scope Repository interface
+builder.Services.AddScoped<IComputerRepository, IComputerRepository>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    // Add OpenAPI 3.0 document serving middleware
-    // Available at: http://localhost:<port>/swagger/v1/swagger.json
     app.UseOpenApi();
-
-    // Add web UIs to interact with the document
-    // Available at: http://localhost:<port>/swagger
-    app.UseSwaggerUi(); // UseSwaggerUI Protected by if (env.IsDevelopment())
+    app.UseSwaggerUi();
 }
 
-app.MapGet("/", () => "Hello World !");
 app.MapControllers();
 
 app.Run();
