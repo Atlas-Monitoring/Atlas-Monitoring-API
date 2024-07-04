@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Atlas_Monitoring.Core.Application</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Atlas-Monitoring.Core.Interface\Atlas-Monitoring.Core.Interface.csproj" />
+    <ProjectReference Include="..\Atlas-Monitoring.CustomException\Atlas-Monitoring.CustomException.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34928.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas-Monitoring.Core.Models", "Atlas-Monitoring.Core.Models\Atlas-Monitoring.Core.Models.csproj", "{AF9657FB-AD60-4360-AF9A-CAA267C5E318}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas-Monitoring", "Atlas-Monitoring\Atlas-Monitoring.csproj", "{6739E43E-95BE-42A6-A264-75FCA8E1D941}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas-Monitoring.Core.Application", "Atlas-Monitoring.Core.Application\Atlas-Monitoring.Core.Application.csproj", "{138A77BC-ECEF-4D48-8A1E-92E67453A961}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas-Monitoring.Core.Infrastructure", "Atlas-Monitoring.Core.Infrastructure\Atlas-Monitoring.Core.Infrastructure.csproj", "{68D7C4C9-801D-4233-8058-1DB126650C29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas-Monitoring.Core.Interface", "Atlas-Monitoring.Core.Interface\Atlas-Monitoring.Core.Interface.csproj", "{FD0C6171-9E8E-4138-9F88-6C9F208B4D88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas-Monitoring.CustomException", "Atlas-Monitoring.CustomException\Atlas-Monitoring.CustomException.csproj", "{451AFA66-531F-416B-A751-C8DF33049405}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF9657FB-AD60-4360-AF9A-CAA267C5E318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF9657FB-AD60-4360-AF9A-CAA267C5E318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF9657FB-AD60-4360-AF9A-CAA267C5E318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF9657FB-AD60-4360-AF9A-CAA267C5E318}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6739E43E-95BE-42A6-A264-75FCA8E1D941}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6739E43E-95BE-42A6-A264-75FCA8E1D941}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6739E43E-95BE-42A6-A264-75FCA8E1D941}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6739E43E-95BE-42A6-A264-75FCA8E1D941}.Release|Any CPU.Build.0 = Release|Any CPU
+		{138A77BC-ECEF-4D48-8A1E-92E67453A961}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{138A77BC-ECEF-4D48-8A1E-92E67453A961}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{138A77BC-ECEF-4D48-8A1E-92E67453A961}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{138A77BC-ECEF-4D48-8A1E-92E67453A961}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68D7C4C9-801D-4233-8058-1DB126650C29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68D7C4C9-801D-4233-8058-1DB126650C29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68D7C4C9-801D-4233-8058-1DB126650C29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68D7C4C9-801D-4233-8058-1DB126650C29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD0C6171-9E8E-4138-9F88-6C9F208B4D88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD0C6171-9E8E-4138-9F88-6C9F208B4D88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD0C6171-9E8E-4138-9F88-6C9F208B4D88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD0C6171-9E8E-4138-9F88-6C9F208B4D88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{451AFA66-531F-416B-A751-C8DF33049405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{451AFA66-531F-416B-A751-C8DF33049405}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{451AFA66-531F-416B-A751-C8DF33049405}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{451AFA66-531F-416B-A751-C8DF33049405}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BAE438F9-FA89-42F0-B9BA-D0EF98235B31}
+	EndGlobalSection
+EndGlobal

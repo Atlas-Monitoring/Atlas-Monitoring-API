@@ -10,7 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
+    <PackageReference Include="NSwag.AspNetCore" Version="14.0.8" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Atlas-Monitoring.Core.Infrastructure\Atlas-Monitoring.Core.Infrastructure.csproj" />
+    <ProjectReference Include="..\Atlas-Monitoring.Core.Models\Atlas-Monitoring.Core.Models.csproj" />
   </ItemGroup>
 
 </Project>

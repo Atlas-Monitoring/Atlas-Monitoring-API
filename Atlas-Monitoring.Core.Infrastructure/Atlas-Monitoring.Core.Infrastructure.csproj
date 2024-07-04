@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Atlas_Monitoring.Core.Infrastructure</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Atlas-Monitoring.Core.Interface\Atlas-Monitoring.Core.Interface.csproj" />
+    <ProjectReference Include="..\Atlas-Monitoring.Core.Models\Atlas-Monitoring.Core.Models.csproj" />
+    <ProjectReference Include="..\Atlas-Monitoring.CustomException\Atlas-Monitoring.CustomException.csproj" />
+  </ItemGroup>
+
+</Project>
