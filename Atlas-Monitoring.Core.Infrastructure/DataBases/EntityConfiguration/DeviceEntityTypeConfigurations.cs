@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Atlas_Monitoring.Core.Models.Database;
 using Microsoft.EntityFrameworkCore;
-using Atlas_Monitoring.Core.Models.Database;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Atlas_Monitoring.Core.Infrastructure.DataBases.EntityConfiguration
 {

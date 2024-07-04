@@ -67,7 +67,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         #endregion
 
         #region Private Methods
-        private ComputerWriteViewModel CheckComputerWriteViewModel(ComputerWriteViewModel computer) 
+        private ComputerWriteViewModel CheckComputerWriteViewModel(ComputerWriteViewModel computer)
         {
             //Throw custom exception if something is wrong
             if (computer.Name == null || computer.Name == string.Empty) { throw new CustomModelException("Computer name is empty"); }
