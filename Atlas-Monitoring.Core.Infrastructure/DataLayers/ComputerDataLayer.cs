@@ -5,6 +5,7 @@ using Atlas_Monitoring.Core.Models.Internal;
 using Atlas_Monitoring.Core.Models.ViewModels;
 using Atlas_Monitoring.CustomException;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
 {
@@ -26,6 +27,9 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         public async Task<ComputerReadViewModel> AddComputer(ComputerWriteViewModel computer)
         {
             Device newComputer = TransformViewModelToDeviceObject(computer, true);
+
+            EntityEntry deviteTypeEntityEntry = _context.Entry(newComputer.DeviceType);
+            deviteTypeEntityEntry.State = EntityState.Unchanged;
 
             await _context.Device.AddAsync(newComputer);
             await _context.SaveChangesAsync();
@@ -130,7 +134,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
             return new()
             {
                 Id = isNewComputer ? Guid.NewGuid() : computerWriteViewModel.Id,
-                DeviceStatus = isNewComputer ? DeviceStatus.New : DeviceStatus.Undefined, //Todo : Récupérer le statut actuel
+                DeviceStatus = isNewComputer ? DeviceStatus.New : _context.Device.Where(item => item.Id == computerWriteViewModel.Id).Single().DeviceStatus,
                 DeviceType = DeviceType.Computer,
                 Name = computerWriteViewModel.Name,
                 Ip = computerWriteViewModel.Ip,
@@ -152,7 +156,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
             {
                 Id = device.Id,
                 DeviceStatus = device.DeviceStatus,
-                DeviceType = device.DeviceType,
+                DeviceType = DeviceType.Computer,
                 Name = device.Name,
                 Ip = device.Ip,
                 Domain = device.Domain,
