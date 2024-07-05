@@ -72,7 +72,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
             }
         }
 
-        public async Task<Guid> CheckIfComputerAlreadyExist(string computerName, string computerSerialNumber)
+        public async Task<Guid> GetIdOfComputer(string computerName, string computerSerialNumber)
         {
             if (await _context.Device.Where(item => item.Name == computerName && item.SerialNumber == computerSerialNumber && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
             {
@@ -84,6 +84,11 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
             {
                 throw new CustomNoContentException($"Computer with name '{computerName}' and serial number '{computerSerialNumber}' don't exist");
             }
+        }
+
+        public async Task<bool> CheckIfComputerExist(string computerName, string computerSerialNumber)
+        {
+            return await _context.Device.Where(item => item.Name == computerName && item.SerialNumber == computerSerialNumber && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync();
         }
         #endregion
 

@@ -29,29 +29,36 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         {
             computer = CheckComputerWriteViewModel(computer);
 
-            //Add Computer
-            ComputerReadViewModel computerBdd = await _computerDataLayer.AddComputer(computer);
-
-            //Add HardDrive
-            if (computer.ComputerHardDrive != null && computer.ComputerHardDrive.Any())
+            if (await _computerDataLayer.CheckIfComputerExist(computer.Name, computer.SerialNumber))
             {
-                foreach (ComputerHardDriveViewModel computerHardDrive in computer.ComputerHardDrive) 
+                throw new CustomDataAlreadyExistException($"A computer with name '{computer.Name}' and serial number '{computer.SerialNumber}' already exist");
+            }
+            else
+            {
+                //Add Computer
+                ComputerReadViewModel computerBdd = await _computerDataLayer.AddComputer(computer);
+
+                //Add HardDrive
+                if (computer.ComputerHardDrive != null && computer.ComputerHardDrive.Any())
                 {
-                    computerHardDrive.ComputerId = computerBdd.Id;
+                    foreach (ComputerHardDriveViewModel computerHardDrive in computer.ComputerHardDrive)
+                    {
+                        computerHardDrive.ComputerId = computerBdd.Id;
 
-                    await _computerHardDriveRepository.AddComputerHardDrive(computerHardDrive);
+                        await _computerHardDriveRepository.AddComputerHardDrive(computerHardDrive);
+                    }
                 }
-            }
 
-            //Add ComputerData
-            if (computer.ComputerData != null)
-            {
-                computer.ComputerData.ComputerId = computerBdd.Id;
+                //Add ComputerData
+                if (computer.ComputerData != null)
+                {
+                    computer.ComputerData.ComputerId = computerBdd.Id;
 
-                await _computerDataRepository.AddComputerData(computer.ComputerData);
-            }
+                    await _computerDataRepository.AddComputerData(computer.ComputerData);
+                }
 
-            return computerBdd;
+                return computerBdd;
+            }            
         }
         #endregion
 
@@ -66,9 +73,9 @@ namespace Atlas_Monitoring.Core.Application.Repositories
             return await _computerDataLayer.GetOneComputerById(id);
         }
 
-        public async Task<Guid> CheckIfComputerAlreadyExist(string computerName, string computerSerialNumber)
+        public async Task<Guid> GetIdOfComputer(string computerName, string computerSerialNumber)
         {
-            return await _computerDataLayer.CheckIfComputerAlreadyExist(computerName, computerSerialNumber);
+            return await _computerDataLayer.GetIdOfComputer(computerName, computerSerialNumber);
         }
         #endregion
 

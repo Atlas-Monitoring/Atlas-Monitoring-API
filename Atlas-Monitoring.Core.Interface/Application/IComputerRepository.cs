@@ -34,7 +34,7 @@ namespace Atlas_Monitoring.Core.Interface.Application
         /// <param name="computerName">Computer name</param>
         /// <param name="computerSerialNumber">Serial number</param>
         /// <returns>Guid if exist</returns>
-        public Task<Guid> CheckIfComputerAlreadyExist(string computerName, string computerSerialNumber);
+        public Task<Guid> GetIdOfComputer(string computerName, string computerSerialNumber);
         #endregion
 
         #region Update
