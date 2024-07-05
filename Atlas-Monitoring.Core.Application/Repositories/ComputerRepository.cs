@@ -1,5 +1,6 @@
 ﻿using Atlas_Monitoring.Core.Interface.Application;
 using Atlas_Monitoring.Core.Interface.Infrastructure;
+using Atlas_Monitoring.Core.Models.Internal;
 using Atlas_Monitoring.Core.Models.ViewModels;
 using Atlas_Monitoring.CustomException;
 
@@ -56,6 +57,11 @@ namespace Atlas_Monitoring.Core.Application.Repositories
 
             return await _computerDataLayer.UpdateComputer(computer);
         }
+
+        public async Task UpdateComputerStatus(Guid id, DeviceStatus deviceStatus)
+        {
+            await _computerDataLayer.UpdateComputerStatus(id, deviceStatus);
+        }
         #endregion
 
         #region Delete
@@ -95,7 +101,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
             computer.DateUpdated = DateTime.Now;
 
             return computer;
-        }
+        }        
         #endregion
     }
 }

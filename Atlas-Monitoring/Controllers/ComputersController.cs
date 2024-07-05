@@ -1,4 +1,5 @@
 ﻿using Atlas_Monitoring.Core.Interface.Application;
+using Atlas_Monitoring.Core.Models.Internal;
 using Atlas_Monitoring.Core.Models.ViewModels;
 using Atlas_Monitoring.CustomException;
 using Microsoft.AspNetCore.Mvc;
@@ -99,6 +100,29 @@ namespace Atlas_Monitoring.Controllers
                 if (id != computer.Id) { throw new CustomModelException("Id don't match !"); }
 
                 return Ok(await _computerRepository.UpdateComputer(computer));
+            }
+            catch (CustomNoContentException ex)
+            {
+                return NoContent();
+            }
+            catch (CustomModelException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: "Internal Exception", statusCode: 500);
+            }
+        }
+
+        [HttpPut("{id}/{newDeviceStatus}")]
+        public async Task<ActionResult<ComputerReadViewModel>> UpdateComputerStatus(Guid id, DeviceStatus newDeviceStatus)
+        {
+            try
+            {
+                await _computerRepository.UpdateComputerStatus(id, newDeviceStatus);
+
+                return Ok();
             }
             catch (CustomNoContentException ex)
             {

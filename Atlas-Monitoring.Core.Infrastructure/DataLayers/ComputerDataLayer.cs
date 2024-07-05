@@ -113,6 +113,19 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 throw new CustomNoContentException($"Computer with id {computer.Id} don't exist");
             }
         }
+
+        public async Task UpdateComputerStatus(Guid id, DeviceStatus deviceStatus)
+        {
+            if (await _context.Device.Where(item => item.Id == id && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
+            {
+                Device device = await _context.Device.Where(item => item.Id == id && item.DeviceType.Id == DeviceType.Computer.Id).SingleAsync();
+
+                device.DeviceStatus = deviceStatus;
+
+                _context.Entry(device).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+        }
         #endregion
 
         #region Delete
