@@ -89,6 +89,8 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         #region Delete
         public async Task DeleteComputer(Guid id)
         {
+            await _computerHardDriveRepository.DeleteAllComputerHardDriveOfAComputer(id);
+            await _computerDataRepository.DeleteAllComputerDataOfAComputer(id);
             await _computerDataLayer.DeleteComputer(id);
         }
         #endregion
