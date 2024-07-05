@@ -32,13 +32,17 @@ namespace Atlas_Monitoring.Controllers
 
                 return CreatedAtAction(nameof(AddNewComputer), new { id = computerDatabase.Id }, computerDatabase);
             }
+            catch (CustomDataAlreadyExistException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (CustomModelException ex)
             {
-                return Problem(detail: ex.Message, statusCode: 500);
+                return BadRequest(ex.Message);
             }
             catch (CustomDataBaseException ex)
             {
-                return Problem(detail: ex.Message, statusCode: 500);
+                return BadRequest(ex.Message);
             }
             catch(Exception ex)
             {
