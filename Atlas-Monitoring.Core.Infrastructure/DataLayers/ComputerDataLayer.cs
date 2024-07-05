@@ -26,6 +26,11 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         #region Create
         public async Task<ComputerReadViewModel> AddComputer(ComputerWriteViewModel computer)
         {
+            if (await _context.Device.Where(item => item.Name == computer.Name && item.SerialNumber == computer.SerialNumber && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
+            {
+                throw new CustomDataBaseException($"Computer with name '{computer.Name}' and serial number '{computer.SerialNumber}' already exist");
+            }
+
             Device newComputer = TransformViewModelToDeviceObject(computer, true);
 
             EntityEntry deviteTypeEntityEntry = _context.Entry(newComputer.DeviceType);

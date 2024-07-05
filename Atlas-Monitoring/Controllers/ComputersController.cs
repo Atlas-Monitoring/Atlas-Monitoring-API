@@ -35,6 +35,10 @@ namespace Atlas_Monitoring.Controllers
             {
                 return Problem(detail: ex.Message, statusCode: 500);
             }
+            catch (CustomDataBaseException ex)
+            {
+                return Problem(detail: ex.Message, statusCode: 500);
+            }
             catch(Exception ex)
             {
                 return Problem(detail: "Internal Exception", statusCode: 500);
