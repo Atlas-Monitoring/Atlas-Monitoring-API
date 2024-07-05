@@ -136,12 +136,13 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 Device computer = await _context.Device.Where(item => item.Id == id && item.DeviceType.Id == DeviceType.Computer.Id).SingleAsync();
 
                 _context.Device.Remove(computer);
-                await _context.SaveChangesAsync();
             }
             else
             {
                 throw new CustomNoContentException($"Computer with id {id} don't exist");
             }
+
+            await _context.SaveChangesAsync();
         }
         #endregion
         #endregion

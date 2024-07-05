@@ -1,13 +1,10 @@
-using Atlas_Monitoring;
 using Atlas_Monitoring.Core.Application.Repositories;
 using Atlas_Monitoring.Core.Infrastructure.DataBases;
 using Atlas_Monitoring.Core.Infrastructure.DataLayers;
 using Atlas_Monitoring.Core.Interface.Application;
 using Atlas_Monitoring.Core.Interface.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using Serilog;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,9 +23,13 @@ builder.Services.AddDbContext<DefaultDbContext>(options =>
 });
 
 //Scope DataLayer interface
+builder.Services.AddScoped<IComputerDataDataLayer, ComputerDataDataLayer>();
 builder.Services.AddScoped<IComputerDataLayer, ComputerDataLayer>();
+builder.Services.AddScoped<IComputerHardDriveDataLayer, ComputerHardDriveDataLayer>();
 
 //Scope Repository interface
+builder.Services.AddScoped<IComputerDataRepository, ComputerDataRepository>();
+builder.Services.AddScoped<IComputerHardDriveRepository, ComputerHardDriveRepository>();
 builder.Services.AddScoped<IComputerRepository, ComputerRepository>();
 
 var app = builder.Build();

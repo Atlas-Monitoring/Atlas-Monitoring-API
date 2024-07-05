@@ -10,12 +10,16 @@ namespace Atlas_Monitoring.Core.Application.Repositories
     {
         #region Properties
         private readonly IComputerDataLayer _computerDataLayer;
+        private readonly IComputerHardDriveRepository _computerHardDriveRepository;
+        private readonly IComputerDataRepository _computerDataRepository;
         #endregion
 
         #region Constructor
-        public ComputerRepository(IComputerDataLayer computerDataLayer)
+        public ComputerRepository(IComputerDataLayer computerDataLayer, IComputerHardDriveRepository computerHardDriveRepository, IComputerDataRepository computerDataRepository)
         {
             _computerDataLayer = computerDataLayer;
+            _computerHardDriveRepository = computerHardDriveRepository;
+            _computerDataRepository = computerDataRepository;
         }
         #endregion
 
@@ -25,11 +29,29 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         {
             computer = CheckComputerWriteViewModel(computer);
 
-            //Todo : Add HardDrive
+            //Add Computer
+            ComputerReadViewModel computerBdd = await _computerDataLayer.AddComputer(computer);
 
-            //Todo : Add ComputerData
+            //Add HardDrive
+            if (computer.ComputerHardDrive != null && computer.ComputerHardDrive.Any())
+            {
+                foreach (ComputerHardDriveViewModel computerHardDrive in computer.ComputerHardDrive) 
+                {
+                    computerHardDrive.ComputerId = computerBdd.Id;
 
-            return await _computerDataLayer.AddComputer(computer);
+                    await _computerHardDriveRepository.AddComputerHardDrive(computerHardDrive);
+                }
+            }
+
+            //Add ComputerData
+            if (computer.ComputerData != null)
+            {
+                computer.ComputerData.ComputerId = computerBdd.Id;
+
+                await _computerDataRepository.AddComputerData(computer.ComputerData);
+            }
+
+            return computerBdd;
         }
         #endregion
 

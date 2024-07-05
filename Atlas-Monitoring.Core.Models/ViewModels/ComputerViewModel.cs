@@ -41,6 +41,6 @@ namespace Atlas_Monitoring.Core.Models.ViewModels
         public DateTime DateUpdated { get; set; }
 
         public List<ComputerHardDriveViewModel> ComputerHardDrive = new();
-        public ComputerDataViewModel ComputerData = new();
+        public ComputerDataViewModel ComputerData;
     }
 }
