@@ -21,6 +21,14 @@ namespace Atlas_Monitoring.Core.Interface.Infrastructure
         /// <param name="computerId">Id of computer</param>
         /// <returns>List of ComputerHardDriveViewModel</returns>
         public Task<List<ComputerHardDriveViewModel>> GetAllComputerHardDriveOfAComputer(Guid computerId);
+
+        /// <summary>
+        /// Get computer HardDrive from computer Id and Letter of HardDrive
+        /// </summary>
+        /// <param name="computerId">Computer Id</param>
+        /// <param name="letter">Letter of HardDrive</param>
+        /// <returns>Guid of Computer Hard drive or empty Guid</returns>
+        public Task<Guid> GetGuidOfComputerHardDriveIfExist(Guid computerId, string letter);
         #endregion
 
         #region Update

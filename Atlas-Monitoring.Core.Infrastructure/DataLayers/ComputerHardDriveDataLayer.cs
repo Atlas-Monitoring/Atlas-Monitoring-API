@@ -55,6 +55,19 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
 
             return listComputerHardDriveViewModel;
         }
+
+        public async Task<Guid> GetGuidOfComputerHardDriveIfExist(Guid computerId, string letter)
+        {
+            if (await _context.ComputerHardDrive.Where(item => item.Device.Id == computerId && item.Letter == letter).AnyAsync())
+            {
+                ComputerHardDrive computerHardDrive = await _context.ComputerHardDrive.Where(item => item.Device.Id == computerId && item.Letter == letter).SingleAsync();
+                return computerHardDrive.Id;
+            }
+            else
+            {
+                return Guid.Empty;
+            }
+        }
         #endregion
 
         #region Update
@@ -98,7 +111,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 TotalSpace= computerHardDrive.TotalSpace,
                 SpaceUse = computerHardDrive.SpaceUse
             };
-        }
+        }        
         #endregion
     }
 }

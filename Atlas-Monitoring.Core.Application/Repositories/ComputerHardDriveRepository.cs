@@ -34,6 +34,11 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         {
             return await _computerHardDriveDataLayer.GetAllComputerHardDriveOfAComputer(computerId);
         }
+
+        public async Task<Guid> GetGuidOfComputerHardDriveIfExist(Guid computerId, string letter)
+        {
+            return await _computerHardDriveDataLayer.GetGuidOfComputerHardDriveIfExist(computerId, letter);
+        }
         #endregion
 
         #region Update
@@ -59,7 +64,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
             if (computerHardDriveViewModel.SpaceUse < 0) { throw new CustomModelException($"The property 'SpaceUse' can't be lower than 0"); }
 
             return computerHardDriveViewModel;
-        }
+        }        
         #endregion
     }
 }
