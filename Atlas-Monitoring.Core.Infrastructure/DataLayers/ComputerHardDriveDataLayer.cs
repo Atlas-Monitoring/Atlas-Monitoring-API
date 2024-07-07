@@ -86,6 +86,21 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         #endregion
 
         #region Delete
+        public async Task DeleteOneHardDriveOfAComputer(Guid computerId, Guid computerHardDriveId)
+        {
+            if (await _context.ComputerHardDrive.Where(item => item.Id == computerHardDriveId && item.Device.Id == computerId).AnyAsync())
+            {
+                ComputerHardDrive computerHardDrive = await _context.ComputerHardDrive.Where(item => item.Id == computerHardDriveId && item.Device.Id == computerId).SingleAsync();
+
+                _context.ComputerHardDrive.Remove(computerHardDrive);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new CustomNoContentException($"Any HardDrive with id '{computerHardDriveId}' and computer id '{computerId}' was found");
+            }
+
+        }
         public async Task DeleteAllComputerHardDriveOfAComputer(Guid computerId)
         {
             List<ComputerHardDrive> listComputerHardDrive = await _context.ComputerHardDrive.Where(item => item.Device.Id == computerId).ToListAsync();
@@ -111,7 +126,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 TotalSpace= computerHardDrive.TotalSpace,
                 SpaceUse = computerHardDrive.SpaceUse
             };
-        }        
+        }
         #endregion
     }
 }

@@ -40,7 +40,14 @@ namespace Atlas_Monitoring.Core.Interface.Application
         public Task<ComputerHardDriveViewModel> UpdateOneHardDrive(ComputerHardDriveViewModel computerHardDriveViewModel);
         #endregion
 
-        #region Delete 
+        #region Delete
+        /// <summary>
+        /// Delete one HardDrive of a Computer
+        /// </summary>
+        /// <param name="computerId">Computer ID</param>
+        /// <param name="computerHardDriveId">Computer Hard drive ID</param>
+        public Task DeleteOneHardDriveOfAComputer(Guid computerId, Guid computerHardDriveId);
+
         /// <summary>
         /// Delete All HardDrive of a Computer
         /// </summary>

@@ -67,6 +67,32 @@ namespace Atlas_Monitoring.Controllers
             }
         }
         #endregion
+
+        #region Delete
+        [HttpDelete("{computerId}/{computerHardDriveId}")]
+        public async Task<ActionResult> DeleteOneHardDriveOfAComputer(Guid computerId, Guid computerHardDriveId)
+        {
+            try
+            {
+                await _computerHardDriveRepository.DeleteOneHardDriveOfAComputer(computerId, computerHardDriveId);
+
+                return NoContent();
+            }
+            catch (CustomNoContentException ex)
+            {
+                return NoContent();
+            }
+            catch (CustomModelException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: "Internal Exception", statusCode: 500);
+            }
+        }
+        
+        #endregion
         #endregion
 
         #region Private Methods
