@@ -17,7 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument();
 
 //Connection string
-string connectionString = "server=localhost;user=root;password=toor;database=atlas-monitoring";
+string connectionString = "server=172.17.0.2;user=root;password=toor;database=atlas-monitoring";
 
 if (!builder.Environment.IsDevelopment())
 {
@@ -27,7 +27,7 @@ if (!builder.Environment.IsDevelopment())
 //Add database connection
 builder.Services.AddDbContext<DefaultDbContext>(options =>
 {
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultContext"), serverVersion: ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultContext")));
+    options.UseMySql(connectionString, serverVersion: ServerVersion.AutoDetect(connectionString));
 });
 
 //Scope DataLayer interface
