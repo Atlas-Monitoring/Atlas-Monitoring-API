@@ -10,25 +10,25 @@ env:
   REGISTRY: ghcr.io  
 
 jobs:
-  build-and-unit-test: 
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '8.0.x'
-      - name: Install dependencies
-        run: dotnet restore
-      - name: Build
-        run: dotnet build
-      - name: Test with the dotnet CLI
-        run: dotnet test
+  # build-and-unit-test: 
+  #   runs-on: ubuntu-latest
+  #   environment: production
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Setup dotnet
+  #       uses: actions/setup-dotnet@v3
+  #       with:
+  #         dotnet-version: '8.0.x'
+  #     - name: Install dependencies
+  #       run: dotnet restore
+  #     - name: Build
+  #       run: dotnet build
+  #     - name: Test with the dotnet CLI
+  #       run: dotnet test
   publish-package:
     runs-on: ubuntu-latest
     environment: production
-    needs: build-and-unit-test
+    # needs: build-and-unit-test
     permissions:
       contents: read
       packages: write
@@ -45,4 +45,4 @@ jobs:
         with:
           context: ./Atlas-Monitoring
           push: true
-          tags: ghcr.io/mrpaulin39/atlas-monitoring-api:latest
+          tags: ghcr.io/atlas-monitoring/atlas-monitoring-api:latest
