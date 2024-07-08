@@ -16,6 +16,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument();
 
+//Connection string
+string connectionString = "server=localhost;user=root;password=toor;database=atlas-monitoring";
+
+if (!builder.Environment.IsDevelopment())
+{
+    connectionString = $"server={Environment.GetEnvironmentVariable("DB_SERVER")};user={Environment.GetEnvironmentVariable("DB_USER")};password={Environment.GetEnvironmentVariable("DB_PASSWORD")};database={Environment.GetEnvironmentVariable("DB_DATABASE")}";
+}
+
 //Add database connection
 builder.Services.AddDbContext<DefaultDbContext>(options =>
 {
