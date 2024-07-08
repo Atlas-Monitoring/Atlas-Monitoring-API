@@ -8,8 +8,12 @@ EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["./Atlas-Monitoring.csproj", "Atlas-Monitoring/"]
+WORKDIR "/src"
+COPY ["./Atlas-Monitoring.csproj", "./Atlas-Monitoring/Atlas-Monitoring.csproj"]
+COPY ["../Atlas-Monitoring.Core.Application/Atlas-Monitoring.Core.Application.csproj", "./Atlas-Monitoring.Core.Application/Atlas-Monitoring.Core.Application.csproj"]
+COPY ["../Atlas-Monitoring.Core.Infrastructure/Atlas-Monitoring.Core.Infrastructure.csproj", "./Atlas-Monitoring.Core.Infrastructure/Atlas-Monitoring.Core.Infrastructure.csproj"]
+COPY ["../Atlas-Monitoring.Core.Interface/Atlas-Monitoring.Core.Interface.csproj", "./Atlas-Monitoring.Core.Interface/Atlas-Monitoring.Core.Interface.csproj"]
+COPY ["../Atlas-Monitoring.Core.Models/Atlas-Monitoring.Core.Models.csproj", "./Atlas-Monitoring.Core.Models/Atlas-Monitoring.Core.Models.csproj"]
 RUN dotnet restore "./Atlas-Monitoring/Atlas-Monitoring.csproj"
 COPY . .
 WORKDIR "/src/Atlas-Monitoring"
