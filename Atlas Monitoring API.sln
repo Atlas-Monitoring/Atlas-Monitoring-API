@@ -7,13 +7,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas-Monitoring.Core.Model
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas-Monitoring", "Atlas-Monitoring\Atlas-Monitoring.csproj", "{6739E43E-95BE-42A6-A264-75FCA8E1D941}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas-Monitoring.Core.Application", "Atlas-Monitoring.Core.Application\Atlas-Monitoring.Core.Application.csproj", "{138A77BC-ECEF-4D48-8A1E-92E67453A961}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas-Monitoring.Core.Application", "Atlas-Monitoring.Core.Application\Atlas-Monitoring.Core.Application.csproj", "{138A77BC-ECEF-4D48-8A1E-92E67453A961}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas-Monitoring.Core.Infrastructure", "Atlas-Monitoring.Core.Infrastructure\Atlas-Monitoring.Core.Infrastructure.csproj", "{68D7C4C9-801D-4233-8058-1DB126650C29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas-Monitoring.Core.Infrastructure", "Atlas-Monitoring.Core.Infrastructure\Atlas-Monitoring.Core.Infrastructure.csproj", "{68D7C4C9-801D-4233-8058-1DB126650C29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas-Monitoring.Core.Interface", "Atlas-Monitoring.Core.Interface\Atlas-Monitoring.Core.Interface.csproj", "{FD0C6171-9E8E-4138-9F88-6C9F208B4D88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas-Monitoring.Core.Interface", "Atlas-Monitoring.Core.Interface\Atlas-Monitoring.Core.Interface.csproj", "{FD0C6171-9E8E-4138-9F88-6C9F208B4D88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas-Monitoring.CustomException", "Atlas-Monitoring.CustomException\Atlas-Monitoring.CustomException.csproj", "{451AFA66-531F-416B-A751-C8DF33049405}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atlas-Monitoring.CustomException", "Atlas-Monitoring.CustomException\Atlas-Monitoring.CustomException.csproj", "{451AFA66-531F-416B-A751-C8DF33049405}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{A0ACF522-A820-42DD-914F-26BD8C76DB8E}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
