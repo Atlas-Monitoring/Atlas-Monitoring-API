@@ -7,6 +7,7 @@
     <RootNamespace>Atlas_Monitoring</RootNamespace>
     <UserSecretsId>415512b8-c2b5-4480-9219-018363752646</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	<DockerfileFile>../Dockerfile</DockerfileFile>
   </PropertyGroup>
 
   <ItemGroup>

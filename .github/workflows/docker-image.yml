@@ -43,6 +43,6 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: ./Atlas-Monitoring
+          context: .
           push: true
           tags: ghcr.io/atlas-monitoring/atlas-monitoring-api:latest
