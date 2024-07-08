@@ -53,6 +53,11 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         {
             await _computerHardDriveDataLayer.DeleteAllComputerHardDriveOfAComputer(computerId);
         }
+
+        public async Task DeleteOneHardDriveOfAComputer(Guid computerId, Guid computerHardDriveId)
+        {
+            await _computerHardDriveDataLayer.DeleteOneHardDriveOfAComputer(computerId, computerHardDriveId);
+        }
         #endregion
         #endregion
 
@@ -64,7 +69,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
             if (computerHardDriveViewModel.SpaceUse < 0) { throw new CustomModelException($"The property 'SpaceUse' can't be lower than 0"); }
 
             return computerHardDriveViewModel;
-        }        
+        }
         #endregion
     }
 }

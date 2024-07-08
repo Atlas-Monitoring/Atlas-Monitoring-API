@@ -38,25 +38,6 @@ namespace Atlas_Monitoring.Core.Application.Repositories
                 //Add Computer
                 ComputerReadViewModel computerBdd = await _computerDataLayer.AddComputer(computer);
 
-                //Add HardDrive
-                if (computer.ComputerHardDrive != null && computer.ComputerHardDrive.Any())
-                {
-                    foreach (ComputerHardDriveViewModel computerHardDrive in computer.ComputerHardDrive)
-                    {
-                        computerHardDrive.ComputerId = computerBdd.Id;
-
-                        await _computerHardDriveRepository.AddComputerHardDrive(computerHardDrive);
-                    }
-                }
-
-                //Add ComputerData
-                if (computer.ComputerData != null)
-                {
-                    computer.ComputerData.ComputerId = computerBdd.Id;
-
-                    await _computerDataRepository.AddComputerData(computer.ComputerData);
-                }
-
                 return computerBdd;
             }            
         }

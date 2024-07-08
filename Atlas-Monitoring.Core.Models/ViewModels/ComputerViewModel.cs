@@ -39,8 +39,5 @@ namespace Atlas_Monitoring.Core.Models.ViewModels
         public string SerialNumber { get; set; } = string.Empty;
         public DateTime DateAdd { get; set; }
         public DateTime DateUpdated { get; set; }
-
-        public List<ComputerHardDriveViewModel> ComputerHardDrive = new();
-        public ComputerDataViewModel ComputerData;
     }
 }
