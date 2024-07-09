@@ -107,6 +107,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 computerDatabase.OSVersion = computer.OSVersion;
                 computerDatabase.UserName = computer.UserName;
                 computerDatabase.SerialNumber = computer.SerialNumber;
+                computerDatabase.DateUpdated = DateTime.Now;
 
                 _context.Entry(computerDatabase).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
