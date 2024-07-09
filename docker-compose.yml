@@ -1,0 +1,23 @@
+﻿services:
+    api-atlas-monitoring:
+        container_name: api-atlas-monitoring
+        image: ghcr.io/atlas-monitoring/atlas-monitoring-api:latest
+        restart: always
+        environment:
+            - DB_SERVER=atlas_mariadb
+            - DB_USER=root
+            - DB_PASSWORD=toor
+            - DB_DATABASE=atlas
+            - ASPNETCORE_HTTP_PORTS=8080
+            - ENABLE_SWAGGER=true
+        depends_on:
+            - atlas_mariadb
+        ports:
+            - 8080:8080
+
+    atlas_mariadb:
+        container_name: atlas_mariadb
+        image: mariadb
+        restart: always
+        environment:
+            - MARIADB_ROOT_PASSWORD=toor

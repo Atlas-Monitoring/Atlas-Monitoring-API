@@ -42,7 +42,7 @@ builder.Services.AddScoped<IComputerRepository, ComputerRepository>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || Convert.ToBoolean(Environment.GetEnvironmentVariable("ENABLE_SWAGGER")))
 {
     app.UseOpenApi();
     app.UseSwaggerUi();
