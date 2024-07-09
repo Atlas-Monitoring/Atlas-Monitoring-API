@@ -95,11 +95,11 @@ namespace Atlas_Monitoring.Controllers
         }
 
         [HttpGet("{computerName}/{computerSerialNumber}")]
-        public async Task<ActionResult<ComputerReadViewModel>> GetIdOfComputer(string idcomputerName, string computerSerialNumber)
+        public async Task<ActionResult<ComputerReadViewModel>> GetIdOfComputer(string computerName, string computerSerialNumber)
         {
             try
             {
-                return Ok(await _computerRepository.GetIdOfComputer(idcomputerName, computerSerialNumber));
+                return Ok(await _computerRepository.GetIdOfComputer(computerName, computerSerialNumber));
             }
             catch (CustomNoContentException ex)
             {
