@@ -93,6 +93,27 @@ namespace Atlas_Monitoring.Controllers
                 return Problem(detail: "Internal Exception", statusCode: 500);
             }
         }
+
+        [HttpGet("{computerName}/{computerSerialNumber}")]
+        public async Task<ActionResult<ComputerReadViewModel>> GetIdOfComputer(string idcomputerName, string computerSerialNumber)
+        {
+            try
+            {
+                return Ok(await _computerRepository.GetIdOfComputer(idcomputerName, computerSerialNumber));
+            }
+            catch (CustomNoContentException ex)
+            {
+                return NoContent();
+            }
+            catch (CustomModelException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: "Internal Exception", statusCode: 500);
+            }
+        }
         #endregion
 
         #region Update
