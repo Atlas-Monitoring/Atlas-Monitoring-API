@@ -1,4 +1,5 @@
-﻿using Atlas_Monitoring.Core.Interface.Application;
+﻿using Atlas_Monitoring.Core.Application.Repositories;
+using Atlas_Monitoring.Core.Interface.Application;
 using Atlas_Monitoring.Core.Models.Database;
 using Atlas_Monitoring.Core.Models.ViewModels;
 using Atlas_Monitoring.CustomException;
@@ -22,6 +23,29 @@ namespace Atlas_Monitoring.Controllers
         #endregion
 
         #region Public Methods
+        #region Read
+        [HttpGet("{computerId}")]
+        public async Task<ActionResult<List<ComputerHardDriveViewModel>>> GetHardDrivesByComputerId(Guid computerId)
+        {
+            try
+            {
+                return Ok(await _computerHardDriveRepository.GetAllComputerHardDriveOfAComputer(computerId));
+            }
+            catch (CustomNoContentException ex)
+            {
+                return NoContent();
+            }
+            catch (CustomModelException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: "Internal Exception", statusCode: 500);
+            }
+        }
+        #endregion
+
         #region Update
         [HttpPut("{computerId}")]
         public async Task<ActionResult<List<ComputerReadViewModel>>> UpdateComputerHardDrive(Guid computerId, List<ComputerHardDriveViewModel> listComputerHardDrive)
