@@ -28,6 +28,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         public async Task<ComputerReadViewModel> AddComputer(ComputerWriteViewModel computer)
         {
             computer = CheckComputerWriteViewModel(computer);
+            computer.DateAdd = DateTime.Now;
 
             if (await _computerDataLayer.CheckIfComputerExist(computer.Name, computer.SerialNumber))
             {
