@@ -17,7 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument();
 
 //Connection string
-string connectionString = "server=172.17.0.2;user=root;password=toor;database=atlas-monitoring";
+string connectionString = "server=172.17.0.3;user=root;password=toor;database=atlas-monitoring";
 
 if (!builder.Environment.IsDevelopment())
 {

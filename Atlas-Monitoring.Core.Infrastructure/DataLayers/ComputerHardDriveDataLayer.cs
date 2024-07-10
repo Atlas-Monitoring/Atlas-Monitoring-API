@@ -35,8 +35,13 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 Device = await _context.Device.Where(item => item.Id == computerHardDriveView.ComputerId).SingleAsync(),
                 Letter = computerHardDriveView.Letter,
                 TotalSpace = computerHardDriveView.TotalSpace,
-                SpaceUse = computerHardDriveView.SpaceUse
+                SpaceUse = computerHardDriveView.SpaceUse,
+                DateAdd = DateTime.Now,
+                DateUpdate = DateTime.Now
             };
+
+            await _context.ComputerHardDrive.AddAsync(computerHardDrive);
+            await _context.SaveChangesAsync();
 
             return computerHardDrive;
         }
@@ -50,6 +55,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
 
             foreach (ComputerHardDrive computerHardDrive in listComputerHardDrive)
             {
+                computerHardDrive.Device = new() { Id = computerId };
                 listComputerHardDriveViewModel.Add(TransformComputerHardDriveToComputerHardDriveViewModel(computerHardDrive));
             }
 
@@ -77,6 +83,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
             computerHardDrive.Letter = computerHardDriveViewModel.Letter;
             computerHardDrive.TotalSpace = computerHardDriveViewModel.TotalSpace;
             computerHardDrive.SpaceUse = computerHardDriveViewModel.SpaceUse;
+            computerHardDrive.DateUpdate = DateTime.Now;
 
             _context.Entry(computerHardDrive).State = EntityState.Modified;
             await _context.SaveChangesAsync();
