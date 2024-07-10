@@ -21,3 +21,4 @@
         restart: always
         environment:
             - MARIADB_ROOT_PASSWORD=toor
+            - TZ=Europe/Paris
