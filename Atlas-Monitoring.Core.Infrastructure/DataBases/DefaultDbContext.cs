@@ -25,6 +25,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataBases
             modelBuilder.ApplyConfiguration(new EntityConfiguration.ComputerHardDriveEntityTypeConfigurations());
             modelBuilder.ApplyConfiguration(new EntityConfiguration.DeviceEntityTypeConfigurations());
             modelBuilder.ApplyConfiguration(new EntityConfiguration.DeviceHistoryEntityTypeConfigurations());
+            modelBuilder.ApplyConfiguration(new EntityConfiguration.DevicePartsEntityTypeConfigurations());
             modelBuilder.ApplyConfiguration(new EntityConfiguration.DeviceTypeEntityTypeConfigurations());
 
             //Disable Delete cascade
@@ -45,6 +46,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataBases
         public DbSet<ComputerData> ComputerData { get; set; }
         public DbSet<ComputerHardDrive> ComputerHardDrive { get; set; }
         public DbSet<DeviceHistory> DeviceHistory { get; set; }
+        public DbSet<DeviceParts> DeviceParts { get; set; }
         public DbSet<DeviceType> DeviceType { get; set; }
         #endregion
     }

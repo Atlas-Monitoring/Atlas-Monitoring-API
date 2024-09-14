@@ -17,11 +17,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument();
 
 //Connection string
-string connectionString = "server=172.17.0.3;user=root;password=toor;database=atlas-monitoring";
+string connectionString = string.Empty;
 
 if (!builder.Environment.IsDevelopment())
 {
     connectionString = $"server={Environment.GetEnvironmentVariable("DB_SERVER")};user={Environment.GetEnvironmentVariable("DB_USER")};password={Environment.GetEnvironmentVariable("DB_PASSWORD")};database={Environment.GetEnvironmentVariable("DB_DATABASE")}";
+}
+else
+{
+    connectionString = "server=localhost;user=root;password=toor;database=atlas-monitoring";
 }
 
 //Add database connection
@@ -33,11 +37,13 @@ builder.Services.AddDbContext<DefaultDbContext>(options =>
 //Scope DataLayer interface
 builder.Services.AddScoped<IComputerDataDataLayer, ComputerDataDataLayer>();
 builder.Services.AddScoped<IComputerDataLayer, ComputerDataLayer>();
+builder.Services.AddScoped<IComputerPartsDataLayer, ComputerPartsDataLayer>();
 builder.Services.AddScoped<IComputerHardDriveDataLayer, ComputerHardDriveDataLayer>();
 
 //Scope Repository interface
 builder.Services.AddScoped<IComputerDataRepository, ComputerDataRepository>();
 builder.Services.AddScoped<IComputerHardDriveRepository, ComputerHardDriveRepository>();
+builder.Services.AddScoped<IComputerPartsRepository, ComputerPartsRepository>();
 builder.Services.AddScoped<IComputerRepository, ComputerRepository>();
 
 var app = builder.Build();
