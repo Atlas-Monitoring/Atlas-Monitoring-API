@@ -67,7 +67,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         #region Update
         public async Task<DevicePartsReadViewModel> UpdateComputerPart(DevicePartsWriteViewModel computerPart)
         {
-            DeviceParts devicePartsBDD = await _context.DeviceParts.Where(item => item.Device.Id == computerPart.DeviceId && item.Name == computerPart.Name).SingleAsync();
+            DeviceParts devicePartsBDD = await _context.DeviceParts.Where(item => item.Device.Id == computerPart.DeviceId && item.Name == computerPart.Name).Include(item => item.Device).SingleAsync();
             devicePartsBDD.Labels = computerPart.Labels;
 
             _context.Entry(devicePartsBDD).State = EntityState.Modified;

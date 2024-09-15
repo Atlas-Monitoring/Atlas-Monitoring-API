@@ -79,7 +79,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         #region Update
         public async Task<ComputerHardDriveViewModel> UpdateOneHardDrive(ComputerHardDriveViewModel computerHardDriveViewModel)
         {
-            ComputerHardDrive computerHardDrive = await _context.ComputerHardDrive.Where(item => item.Id == computerHardDriveViewModel.Id).SingleAsync();
+            ComputerHardDrive computerHardDrive = await _context.ComputerHardDrive.Where(item => item.Id == computerHardDriveViewModel.Id).Include(item => item.Device).SingleAsync();
             computerHardDrive.Letter = computerHardDriveViewModel.Letter;
             computerHardDrive.TotalSpace = computerHardDriveViewModel.TotalSpace;
             computerHardDrive.SpaceUse = computerHardDriveViewModel.SpaceUse;

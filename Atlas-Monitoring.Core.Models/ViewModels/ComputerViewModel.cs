@@ -17,7 +17,8 @@ namespace Atlas_Monitoring.Core.Models.ViewModels
         public string OSVersion { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
         public string SerialNumber { get; set; } = string.Empty;
-        public string ProcessorName { get; set; } = string.Empty;
+        public string Model { get; set; } = string.Empty;
+        public string Manufacturer { get; set; } = string.Empty;
         public DateTime DateAdd { get; set; }
         public DateTime DateUpdated { get; set; }
 
@@ -39,7 +40,8 @@ namespace Atlas_Monitoring.Core.Models.ViewModels
         public string OSVersion { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
         public string SerialNumber { get; set; } = string.Empty;
-        public string ProcessorName { get; set; } = string.Empty;
+        public string Model { get; set; } = string.Empty;
+        public string Manufacturer { get; set; } = string.Empty;
         public DateTime DateAdd { get; set; }
         public DateTime DateUpdated { get; set; }
     }

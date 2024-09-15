@@ -107,6 +107,8 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 computerDatabase.OSVersion = computer.OSVersion;
                 computerDatabase.UserName = computer.UserName;
                 computerDatabase.SerialNumber = computer.SerialNumber;
+                computerDatabase.Model = computer.Model;
+                computerDatabase.Manufacturer = computer.Manufacturer;
                 computerDatabase.DateUpdated = DateTime.Now;
 
                 _context.Entry(computerDatabase).State = EntityState.Modified;
@@ -170,6 +172,8 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 OSVersion = computerWriteViewModel.OSVersion,
                 UserName = computerWriteViewModel.UserName,
                 SerialNumber = computerWriteViewModel.SerialNumber,
+                Model = computerWriteViewModel.Model,
+                Manufacturer = computerWriteViewModel.Manufacturer,
                 DateAdd = computerWriteViewModel.DateAdd,
                 DateUpdated = computerWriteViewModel.DateUpdated
             };
@@ -191,6 +195,8 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 OSVersion = device.OSVersion,
                 UserName = device.UserName,
                 SerialNumber = device.SerialNumber,
+                Model = device.Model,
+                Manufacturer = device.Manufacturer,
                 DateAdd = device.DateAdd,
                 DateUpdated = device.DateUpdated
             };
