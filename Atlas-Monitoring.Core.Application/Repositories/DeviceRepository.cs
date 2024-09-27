@@ -19,38 +19,38 @@ namespace Atlas_Monitoring.Core.Application.Repositories
 
         #region Publics Methods
         #region Create
-        public async Task<DeviceViewModel> CreateNewDevice(DeviceViewModel newDevice)
+        public async Task<DeviceReadViewModel> CreateNewDevice(DeviceWriteViewModel newDevice)
         {
             return await _deviceDataLayer.CreateNewDevice(newDevice);
         }
         #endregion
 
         #region Read
-        public async Task<List<DeviceViewModel>> ListOfDevices()
+        public async Task<List<DeviceReadViewModel>> ListOfDevices()
         {
             return await _deviceDataLayer.ListOfDevices();
         }
 
-        public async Task<List<DeviceViewModel>> ListOfDevicesFilteredOnType(int deviceTypeId)
+        public async Task<List<DeviceReadViewModel>> ListOfDevicesFilteredOnType(int deviceTypeId)
         {
             return await _deviceDataLayer.ListOfDevicesFilteredOnType(deviceTypeId);
         }
 
-        public async Task<DeviceViewModel> GetOneDevice(Guid deviceId)
+        public async Task<DeviceReadViewModel> GetOneDevice(Guid deviceId)
         {
             return await _deviceDataLayer.GetOneDevice(deviceId);
         }
         #endregion
 
         #region Update
-        public async Task<DeviceViewModel> UpdateDevice(DeviceViewModel updatedDevice)
+        public async Task<DeviceReadViewModel> UpdateDevice(DeviceWriteViewModel updatedDevice)
         {
             return await _deviceDataLayer.UpdateDevice(updatedDevice);
         }
         #endregion
 
         #region Delete
-        public async Task<DeviceViewModel> DeleteDevice(Guid deviceId)
+        public async Task<DeviceReadViewModel> DeleteDevice(Guid deviceId)
         {
             return await _deviceDataLayer.DeleteDevice(deviceId);
         }
