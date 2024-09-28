@@ -17,7 +17,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataBases.EntityConfiguration
             //Set property max length
             builder.Property(item => item.Name).HasMaxLength(15);
             builder.Property(item => item.Ip).HasMaxLength(15);
-            builder.Property(item => item.Domain).HasMaxLength(15);
+            builder.Property(item => item.Domain).HasMaxLength(25);
             builder.Property(item => item.OS).HasMaxLength(35);
             builder.Property(item => item.OSVersion).HasMaxLength(35);
             builder.Property(item => item.UserName).HasMaxLength(48);

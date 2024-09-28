@@ -4,6 +4,7 @@ using Atlas_Monitoring.Core.Infrastructure.DataBases;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Atlas_Monitoring.Core.Infrastructure.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    partial class DefaultDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240927122712_IncreaseLengthToDomainName")]
+    partial class IncreaseLengthToDomainName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,7 +112,6 @@ namespace Atlas_Monitoring.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateUpdated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 9, 28, 23, 56, 23, 805, DateTimeKind.Local).AddTicks(4356));
                         .HasDefaultValue(new DateTime(2024, 9, 27, 14, 27, 12, 488, DateTimeKind.Local).AddTicks(10));
 
                     b.Property<int>("DeviceStatus")
@@ -134,8 +136,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.Migrations
 
                     b.Property<string>("Manufacturer")
                         .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("varchar(60)");
+                        .HasColumnType("longtext");
 
                     b.Property<double>("MaxRam")
                         .ValueGeneratedOnAdd()
@@ -144,8 +145,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.Migrations
 
                     b.Property<string>("Model")
                         .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("varchar(60)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()

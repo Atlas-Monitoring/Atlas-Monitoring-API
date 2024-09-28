@@ -104,7 +104,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
             //Check if data would be truncated
             if (computer.Name.Length > 15) { throw new CustomModelException("Property 'Name' would be truncate (15 characters max)"); }
             if (computer.Ip.Length > 15) { throw new CustomModelException("Property 'Ip' would be truncate (15 characters max)"); }
-            if (computer.Domain.Length > 15) { throw new CustomModelException("Property 'Domain' would be truncate (15 characters max)"); }
+            if (computer.Domain.Length > 25) { throw new CustomModelException("Property 'Domain' would be truncate (25 characters max)"); }
             if (computer.OS.Length > 35) { throw new CustomModelException("Property 'OS' would be truncate (35 characters max)"); }
             if (computer.OSVersion.Length > 35) { throw new CustomModelException("Property 'OSVersion' would be truncate (35 characters max)"); }
             if (computer.UserName.Length > 48) { throw new CustomModelException("Property 'UserName' would be truncate (48 characters max)"); }
