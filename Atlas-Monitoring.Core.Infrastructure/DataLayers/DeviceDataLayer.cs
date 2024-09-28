@@ -101,7 +101,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 Device deviceBDD = await _context.Device.Where(item => item.Id == updatedDevice.Id).Include(x => x.DeviceType).SingleAsync();
 
                 deviceBDD.DeviceStatus = updatedDevice.DeviceStatus;
-                deviceBDD.DeviceType = _context.DeviceType.Where(item => item.Id == newDevice.DeviceTypeId).Single();
+                deviceBDD.DeviceType = _context.DeviceType.Where(item => item.Id == updatedDevice.DeviceTypeId).Single();
                 deviceBDD.Name = updatedDevice.Name;
                 deviceBDD.Ip = updatedDevice.Ip;
                 deviceBDD.Domain = updatedDevice.Domain;
@@ -109,7 +109,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 deviceBDD.SerialNumber = updatedDevice.SerialNumber;
                 deviceBDD.Model = updatedDevice.Model;
                 deviceBDD.Manufacturer = updatedDevice.Manufacturer;
-                deviceBDD.DateUpdated = updatedDevice.DateUpdated;
+                deviceBDD.DateUpdated = DateTime.Now;
 
                 _context.Entry(deviceBDD).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
