@@ -35,8 +35,6 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataBases.EntityConfiguration
             builder.Property(item => item.OSVersion).HasDefaultValue(string.Empty);
             builder.Property(item => item.UserName).HasDefaultValue(string.Empty);
             builder.Property(item => item.SerialNumber).HasDefaultValue(string.Empty);
-            builder.Property(item => item.DateAdd).HasDefaultValue(DateTime.Now);
-            builder.Property(item => item.DateUpdated).HasDefaultValue(DateTime.Now);
         }
     }
 }
