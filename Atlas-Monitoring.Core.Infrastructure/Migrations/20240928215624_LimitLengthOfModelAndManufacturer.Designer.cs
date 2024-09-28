@@ -4,6 +4,7 @@ using Atlas_Monitoring.Core.Infrastructure.DataBases;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Atlas_Monitoring.Core.Infrastructure.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    partial class DefaultDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240928215624_LimitLengthOfModelAndManufacturer")]
+    partial class LimitLengthOfModelAndManufacturer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,13 +107,12 @@ namespace Atlas_Monitoring.Core.Infrastructure.Migrations
                     b.Property<DateTime>("DateAdd")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2024, 9, 27, 14, 27, 12, 487, DateTimeKind.Local).AddTicks(9670));
+                        .HasDefaultValue(new DateTime(2024, 9, 28, 23, 56, 23, 805, DateTimeKind.Local).AddTicks(4124));
 
                     b.Property<DateTime>("DateUpdated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
                         .HasDefaultValue(new DateTime(2024, 9, 28, 23, 56, 23, 805, DateTimeKind.Local).AddTicks(4356));
-                        .HasDefaultValue(new DateTime(2024, 9, 27, 14, 27, 12, 488, DateTimeKind.Local).AddTicks(10));
 
                     b.Property<int>("DeviceStatus")
                         .HasColumnType("int");
@@ -121,8 +123,8 @@ namespace Atlas_Monitoring.Core.Infrastructure.Migrations
                     b.Property<string>("Domain")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(25)
-                        .HasColumnType("varchar(25)")
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)")
                         .HasDefaultValue("");
 
                     b.Property<string>("Ip")

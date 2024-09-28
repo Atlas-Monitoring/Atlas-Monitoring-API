@@ -22,6 +22,8 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataBases.EntityConfiguration
             builder.Property(item => item.OSVersion).HasMaxLength(35);
             builder.Property(item => item.UserName).HasMaxLength(48);
             builder.Property(item => item.SerialNumber).HasMaxLength(120);
+            builder.Property(item => item.Model).HasMaxLength(60);
+            builder.Property(item => item.Manufacturer).HasMaxLength(60);
 
             //Set default value for properties
             builder.Property(item => item.Name).HasDefaultValue(string.Empty);

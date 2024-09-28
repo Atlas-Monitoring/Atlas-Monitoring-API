@@ -22,11 +22,11 @@ namespace Atlas_Monitoring.Controllers
 
         #region Publics Methods
         #region Create
-        public async Task<ActionResult<DeviceViewModel>> AddNewDevice(DeviceViewModel newDevice)
+        public async Task<ActionResult<DeviceReadViewModel>> AddNewDevice(DeviceWriteViewModel newDevice)
         {
             try
             {
-                DeviceViewModel deviceBDD = await _deviceRepository.CreateNewDevice(newDevice);
+                DeviceReadViewModel deviceBDD = await _deviceRepository.CreateNewDevice(newDevice);
 
                 return CreatedAtAction(nameof(AddNewDevice), new { id = deviceBDD.Id }, deviceBDD);
             }
@@ -51,7 +51,7 @@ namespace Atlas_Monitoring.Controllers
 
         #region Read
         [HttpGet("GetAll")]
-        public async Task<ActionResult<List<DeviceViewModel>>> GetAllDevices()
+        public async Task<ActionResult<List<DeviceReadViewModel>>> GetAllDevices()
         {
             try
             {
@@ -72,7 +72,7 @@ namespace Atlas_Monitoring.Controllers
         }
 
         [HttpGet("GetAllFiltered/{id}")]
-        public async Task<ActionResult<List<DeviceViewModel>>> GetAllDevices(int deviceTypeId)
+        public async Task<ActionResult<List<DeviceReadViewModel>>> GetAllDevices(int deviceTypeId)
         {
             try
             {
@@ -93,7 +93,7 @@ namespace Atlas_Monitoring.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<DeviceViewModel>> GetDeviceById(Guid id)
+        public async Task<ActionResult<DeviceReadViewModel>> GetDeviceById(Guid id)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace Atlas_Monitoring.Controllers
 
         #region Update
         [HttpPut("{id}")]
-        public async Task<ActionResult<DeviceViewModel>> UpdateDevice(Guid id, DeviceViewModel device)
+        public async Task<ActionResult<DeviceReadViewModel>> UpdateDevice(Guid id, DeviceWriteViewModel device)
         {
             try
             {
