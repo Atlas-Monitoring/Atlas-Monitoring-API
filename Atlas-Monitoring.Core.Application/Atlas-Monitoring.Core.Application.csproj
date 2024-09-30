@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Serilog" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Atlas-Monitoring.Core.Interface\Atlas-Monitoring.Core.Interface.csproj" />
     <ProjectReference Include="..\Atlas-Monitoring.CustomException\Atlas-Monitoring.CustomException.csproj" />
   </ItemGroup>

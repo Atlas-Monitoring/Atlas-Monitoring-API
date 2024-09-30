@@ -40,6 +40,7 @@ builder.Services.AddScoped<IComputerDataLayer, ComputerDataLayer>();
 builder.Services.AddScoped<IComputerPartsDataLayer, ComputerPartsDataLayer>();
 builder.Services.AddScoped<IComputerHardDriveDataLayer, ComputerHardDriveDataLayer>();
 builder.Services.AddScoped<IDeviceDataLayer, DeviceDataLayer>();
+builder.Services.AddScoped<IDeviceSoftwareInstalledDataLayer, DeviceSoftwareInstalledDataLayer>();
 
 //Scope Repository interface
 builder.Services.AddScoped<IComputerDataRepository, ComputerDataRepository>();
@@ -47,6 +48,7 @@ builder.Services.AddScoped<IComputerHardDriveRepository, ComputerHardDriveReposi
 builder.Services.AddScoped<IComputerPartsRepository, ComputerPartsRepository>();
 builder.Services.AddScoped<IComputerRepository, ComputerRepository>();
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+builder.Services.AddScoped<IDeviceSoftwareInstalledRepository, DeviceSoftwareInstalledRepository>();
 
 var app = builder.Build();
 
