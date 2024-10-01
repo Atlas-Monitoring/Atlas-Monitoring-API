@@ -95,7 +95,7 @@ namespace Atlas_Monitoring.Controllers
         }
 
         [HttpGet("{computerName}/{computerSerialNumber}")]
-        public async Task<ActionResult<ComputerReadViewModel>> GetIdOfComputer(string computerName, string computerSerialNumber)
+        public async Task<ActionResult<ComputerReadViewModel>> GetIdOfComputer(string computerName, string computerSerialNumber = "")
         {
             try
             {
