@@ -139,18 +139,48 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         #region Delete
         public async Task DeleteComputer(Guid id)
         {
-            if (await _context.Device.Where(item => item.Id == id && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
-            {
-                Device computer = await _context.Device.Where(item => item.Id == id && item.DeviceType.Id == DeviceType.Computer.Id).SingleAsync();
+            var transaction = await _context.Database.BeginTransactionAsync();
 
-                _context.Device.Remove(computer);
-            }
-            else
+            try
             {
-                throw new CustomNoContentException($"Computer with id {id} don't exist");
-            }
+                if (await _context.Device.Where(item => item.Id == id && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
+                {
+                    //Delete computer Data
+                    await _context.Database.ExecuteSqlAsync($"DELETE FROM ComputerData WHERE DeviceId = {id.ToString()}");
+                    await _context.SaveChangesAsync();
 
-            await _context.SaveChangesAsync();
+                    //Delete computer hard drive
+                    await _context.Database.ExecuteSqlAsync($"DELETE FROM ComputerHardDrive WHERE DeviceId = {id.ToString()}");
+                    await _context.SaveChangesAsync();
+
+                    //Delete computer parts
+                    await _context.Database.ExecuteSqlAsync($"DELETE FROM DeviceParts WHERE DeviceId = {id.ToString()}");
+                    await _context.SaveChangesAsync();
+
+                    //Delete computer Software installed
+                    await _context.Database.ExecuteSqlAsync($"DELETE FROM DeviceSoftwareInstalled WHERE DeviceId = {id.ToString()}");
+                    await _context.SaveChangesAsync();
+
+                    //Delete computer
+                    int numberOfDeletions =  await _context.Database.ExecuteSqlAsync($"DELETE FROM Device WHERE Id = {id.ToString()} AND DeviceTypeId = {DeviceType.Computer.Id}");
+                    await _context.SaveChangesAsync();
+
+                    if (numberOfDeletions > 1) { throw new CustomDataBaseException($"Delete abort due to a number of device deleted > 1 ({numberOfDeletions})"); }
+
+                    transaction.Commit();
+                }
+                else
+                {
+                    throw new CustomNoContentException($"Computer with id {id} don't exist");
+                }
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex) when (ex is not CustomNoContentException && ex is not CustomDataBaseException)
+            {
+                transaction.Rollback();
+                throw new CustomDataBaseException($"Exception with database : {ex.Message}");
+            }
         }
         #endregion
         #endregion

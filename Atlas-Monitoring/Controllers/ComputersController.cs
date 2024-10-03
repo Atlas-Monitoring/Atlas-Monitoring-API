@@ -172,7 +172,7 @@ namespace Atlas_Monitoring.Controllers
             {
                 await _computerRepository.DeleteComputer(id);
 
-                return NoContent();
+                return Ok();
             }
             catch (CustomNoContentException ex)
             {
