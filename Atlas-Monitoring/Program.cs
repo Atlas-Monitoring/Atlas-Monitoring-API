@@ -3,8 +3,12 @@ using Atlas_Monitoring.Core.Infrastructure.DataBases;
 using Atlas_Monitoring.Core.Infrastructure.DataLayers;
 using Atlas_Monitoring.Core.Interface.Application;
 using Atlas_Monitoring.Core.Interface.Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using NSwag;
 using Serilog;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +18,50 @@ builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console());
 //Add Cointrollers to API
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApiDocument();
+builder.Services.AddSwaggerDocument(config =>
+{
+    config.PostProcess = document =>
+    {
+        document.Info.Version = "v1";
+        document.Info.Title = "Atlas API";
+        document.Info.Description = "API of Atlas application";
+        document.Info.Contact = new OpenApiContact
+        {
+            Name = "ATLAS",
+            Email = string.Empty,
+        };
+    };
+
+    config.AddSecurity("JWT Token", Enumerable.Empty<string>(),
+        new OpenApiSecurityScheme()
+        {
+            Type = OpenApiSecuritySchemeType.ApiKey,
+            Name = "Authorization",
+            In = OpenApiSecurityApiKeyLocation.Header,
+            Description = "Copy your Token : Bearer {token}"
+        }
+    );
+});
+
+builder.Services.AddAuthentication(cfg => {
+    cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    cfg.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x => {
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = false;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8
+            .GetBytes(builder.Environment.IsDevelopment() ? "6wE3sLgJQx42BKm9966hHwxS6wE3sLgJQx42BKm9966hHwxS6wE3sLgJQx42BKm9966hHwxS" : Environment.GetEnvironmentVariable("JWT_TOKEN"))
+        ),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ClockSkew = TimeSpan.Zero
+    };
+});
 
 //Connection string
 string connectionString = string.Empty;
@@ -41,6 +88,7 @@ builder.Services.AddScoped<IComputerPartsDataLayer, ComputerPartsDataLayer>();
 builder.Services.AddScoped<IComputerHardDriveDataLayer, ComputerHardDriveDataLayer>();
 builder.Services.AddScoped<IDeviceDataLayer, DeviceDataLayer>();
 builder.Services.AddScoped<IDeviceSoftwareInstalledDataLayer, DeviceSoftwareInstalledDataLayer>();
+builder.Services.AddScoped<IUserDataLayer, UserDataLayer>();
 
 //Scope Repository interface
 builder.Services.AddScoped<IComputerDataRepository, ComputerDataRepository>();
@@ -49,6 +97,7 @@ builder.Services.AddScoped<IComputerPartsRepository, ComputerPartsRepository>();
 builder.Services.AddScoped<IComputerRepository, ComputerRepository>();
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 builder.Services.AddScoped<IDeviceSoftwareInstalledRepository, DeviceSoftwareInstalledRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
@@ -58,6 +107,8 @@ if (app.Environment.IsDevelopment() || Convert.ToBoolean(Environment.GetEnvironm
     app.UseSwaggerUi();
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 ApplyMigration();
 
