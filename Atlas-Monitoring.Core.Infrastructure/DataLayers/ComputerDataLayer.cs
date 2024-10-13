@@ -46,7 +46,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         #region Read
         public async Task<List<ComputerReadViewModel>> GetAllComputer()
         {
-            List<Device> computers = await _context.Device.Where(item => item.DeviceType.Id == DeviceType.Computer.Id).ToListAsync();
+            List<Device> computers = await _context.Device.Where(item => item.DeviceType.Id == DeviceType.Computer.Id).Include(item => item.Entity).ToListAsync();
 
             List<ComputerReadViewModel> listComputerReadViewModels = new();
 
@@ -141,15 +141,22 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
             {
                 throw new CustomNoContentException($"Computer with id {computerId} don't exist");
             }
-            else if (!await _context.Entity.Where(item => item.EntityId == entityId).AnyAsync())
+            else if (entityId != Guid.Empty && !await _context.Entity.Where(item => item.EntityId == entityId).AnyAsync())
             {
                 throw new CustomNoContentException($"Entity with id {entityId} don't exist");
             }
             else
             {
-                Device device = await _context.Device.Where(item => item.Id == computerId && item.DeviceType.Id == DeviceType.Computer.Id).SingleAsync();
+                Device device = await _context.Device.Where(item => item.Id == computerId && item.DeviceType.Id == DeviceType.Computer.Id).Include(item => item.Entity).SingleAsync();
 
-                device.Entity = await _context.Entity.Where(item => item.EntityId == entityId).SingleAsync();
+                if (entityId == Guid.Empty)
+                {
+                    device.Entity = null;
+                }
+                else
+                {
+                    device.Entity = await _context.Entity.Where(item => item.EntityId == entityId).SingleAsync();
+                }
                 
                 _context.Entry(device).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
@@ -249,7 +256,9 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 Model = device.Model,
                 Manufacturer = device.Manufacturer,
                 DateAdd = device.DateAdd,
-                DateUpdated = device.DateUpdated
+                DateUpdated = device.DateUpdated,
+                EntityId = device.Entity is null ? null : device.Entity.EntityId,
+                EntityName = device.Entity is null ? string.Empty : device.Entity.Name
             };
         }        
         #endregion
