@@ -134,6 +134,27 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task UpdateEntityOfComputer(Guid computerId, Guid entityId)
+        {
+            if (!await _context.Device.Where(item => item.Id == computerId && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
+            {
+                throw new CustomNoContentException($"Computer with id {computerId} don't exist");
+            }
+            else if (!await _context.Entity.Where(item => item.EntityId == entityId).AnyAsync())
+            {
+                throw new CustomNoContentException($"Entity with id {entityId} don't exist");
+            }
+            else
+            {
+                Device device = await _context.Device.Where(item => item.Id == computerId && item.DeviceType.Id == DeviceType.Computer.Id).SingleAsync();
+
+                device.Entity = await _context.Entity.Where(item => item.EntityId == entityId).SingleAsync();
+                
+                _context.Entry(device).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+        }
         #endregion
 
         #region Delete
@@ -230,7 +251,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 DateAdd = device.DateAdd,
                 DateUpdated = device.DateUpdated
             };
-        }
+        }        
         #endregion
     }
 }

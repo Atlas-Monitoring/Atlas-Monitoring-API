@@ -51,6 +51,13 @@ namespace Atlas_Monitoring.Core.Interface.Application
         /// <param name="id">Id of computer</param>
         /// <param name="deviceStatus">Status of the device</param>
         public Task UpdateComputerStatus(Guid id, DeviceStatus deviceStatus);
+
+        /// <summary>
+        /// Update Entity of computer
+        /// </summary>
+        /// <param name="computerId">Id of computer</param>
+        /// <param name="entityId">Id of entity</param>
+        public Task UpdateEntityOfComputer(Guid computerId, Guid entityId);
         #endregion
 
         #region Delete

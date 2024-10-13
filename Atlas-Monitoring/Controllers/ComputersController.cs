@@ -167,6 +167,29 @@ namespace Atlas_Monitoring.Controllers
                 return Problem(detail: "Internal Exception", statusCode: 500);
             }
         }
+
+        [HttpPut("AssignEntity/{computerId}/{entityId}")]
+        public async Task<ActionResult> UpdateEntityOfComputer(Guid computerId, Guid entityId)
+        {
+            try
+            {
+                await _computerRepository.UpdateEntityOfComputer(computerId, entityId);
+
+                return Ok();
+            }
+            catch (CustomNoContentException ex)
+            {
+                return NoContent();
+            }
+            catch (CustomModelException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: "Internal Exception", statusCode: 500);
+            }
+        }
         #endregion
 
         #region Delete

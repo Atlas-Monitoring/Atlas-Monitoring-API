@@ -28,6 +28,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataBases
             modelBuilder.ApplyConfiguration(new EntityConfiguration.DevicePartsEntityTypeConfigurations());
             modelBuilder.ApplyConfiguration(new EntityConfiguration.DeviceSoftwareInstalledEntityTypeConfigurations());
             modelBuilder.ApplyConfiguration(new EntityConfiguration.DeviceTypeEntityTypeConfigurations());
+            modelBuilder.ApplyConfiguration(new EntityConfiguration.EntityEntityTypeConfigurations());
             modelBuilder.ApplyConfiguration(new EntityConfiguration.UserEntityTypeConfigurations());
 
             //Disable Delete cascade
@@ -51,6 +52,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataBases
         public DbSet<DeviceParts> DeviceParts { get; set; }
         public DbSet<DeviceSoftwareInstalled> DeviceSoftwareInstalled { get; set; }
         public DbSet<DeviceType> DeviceType { get; set; }
+        public DbSet<Entity> Entity { get; set; }
         public DbSet<User> User { get; set; }
         #endregion
     }

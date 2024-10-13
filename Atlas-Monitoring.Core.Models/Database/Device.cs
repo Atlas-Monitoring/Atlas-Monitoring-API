@@ -7,6 +7,7 @@ namespace Atlas_Monitoring.Core.Models.Database
         public Guid Id { get; set; }
         public DeviceStatus DeviceStatus { get; set; } = DeviceStatus.Undefined;
         public DeviceType DeviceType { get; set; } = DeviceType.Undefined;
+        public Entity? Entity { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Ip { get; set; } = string.Empty;
         public string Domain { get; set; } = string.Empty;
