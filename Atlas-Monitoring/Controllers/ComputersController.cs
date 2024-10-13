@@ -2,10 +2,12 @@
 using Atlas_Monitoring.Core.Models.Internal;
 using Atlas_Monitoring.Core.Models.ViewModels;
 using Atlas_Monitoring.CustomException;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Atlas_Monitoring.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ComputersController : ControllerBase
@@ -24,6 +26,7 @@ namespace Atlas_Monitoring.Controllers
         #region Publics Methods
         #region Create
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<ComputerReadViewModel>> AddNewComputer(ComputerWriteViewModel newComputer)
         {
             try
@@ -118,6 +121,7 @@ namespace Atlas_Monitoring.Controllers
 
         #region Update
         [HttpPut("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<ComputerReadViewModel>> UpdateComputer(Guid id, ComputerWriteViewModel computer)
         {
             try

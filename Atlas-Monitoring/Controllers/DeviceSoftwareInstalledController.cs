@@ -1,10 +1,12 @@
 ﻿using Atlas_Monitoring.Core.Interface.Application;
 using Atlas_Monitoring.Core.Models.ViewModels;
 using Atlas_Monitoring.CustomException;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Atlas_Monitoring.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DeviceSoftwareInstalledController : ControllerBase
@@ -23,6 +25,7 @@ namespace Atlas_Monitoring.Controllers
         #region Public Methods
         #region Create
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult> SyncSoftwareInstalled(List<DeviceSoftwareInstalledWriteViewModel> listOfNewSoftware)
         {
             try
