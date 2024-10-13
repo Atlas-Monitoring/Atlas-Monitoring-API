@@ -18,7 +18,11 @@ namespace Atlas_Monitoring.Core.Interface.Infrastructure
         #endregion
 
         #region Update
-
+        /// <summary>
+        /// Update password
+        /// </summary>
+        /// <param name="authUserViewModel">Object AuthUserViewModel</param>
+        Task UpdatePassword(AuthUserViewModel authUserViewModel);
         #endregion
 
         #region Delete

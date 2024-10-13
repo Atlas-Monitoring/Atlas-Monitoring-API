@@ -39,18 +39,33 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 }
                 else
                 {
-                    throw new CustomAuthentificationFailed();
+                    throw new CustomAuthentificationFailedException();
                 }
             }
             else
             {
-                throw new CustomAuthentificationFailed();
+                throw new CustomAuthentificationFailedException();
             }
         }
         #endregion
 
         #region Update
+        public async Task UpdatePassword(AuthUserViewModel authUserViewModel)
+        {
+            if (await _context.User.Where(item => item.UserName == authUserViewModel.UserName).AnyAsync())
+            {
+                User user = await _context.User.Where(item => item.UserName == authUserViewModel.UserName).SingleAsync();
 
+                user.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(authUserViewModel.Password);
+
+                _context.Entry(user).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new CustomDataBaseException("User not found");
+            }
+        }
         #endregion
 
         #region Delete

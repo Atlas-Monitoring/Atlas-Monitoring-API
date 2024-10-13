@@ -30,7 +30,10 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         #endregion
 
         #region Update
-
+        public async Task UpdatePassword(AuthUserViewModel authUserViewModel)
+        {
+            await _userDataLayer.UpdatePassword(authUserViewModel);
+        }
         #endregion
 
         #region Delete

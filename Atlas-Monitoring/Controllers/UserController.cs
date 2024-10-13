@@ -37,7 +37,7 @@ namespace Atlas_Monitoring.Controllers
 
                 return Ok(authHelpers.GenerateJWTToken(userReadViewModel.UserName));
             }
-            catch (CustomAuthentificationFailed ex)
+            catch (CustomAuthentificationFailedException ex)
             {
                 return BadRequest("Authentification failed");
             }
@@ -53,7 +53,24 @@ namespace Atlas_Monitoring.Controllers
         #endregion
 
         #region Update
+        [HttpPut("UpdatePassword")]
+        public async Task<ActionResult<UserReadViewModel>> UpdatePassword(AuthUserViewModel authUserViewModel)
+        {
+            try
+            {
+                await _userRepository.UpdatePassword(authUserViewModel);
 
+                return Ok();
+            }
+            catch (CustomDataBaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: "Internal Exception", statusCode: 500);
+            }
+        }
         #endregion
 
         #region Delete
