@@ -26,7 +26,7 @@ namespace Atlas_Monitoring.Core.Models.ViewModels
 
         public List<ComputerHardDriveViewModel> ComputerHardDrives = new();
         public List<ComputerDataViewModel> ComputerLastData = new();
-        public List<DeviceHistoryViewModel> ComputerHistory = new();
+        public List<DeviceHistoryReadViewModel> ComputerHistory = new();
         public List<DevicePartsReadViewModel> ComputerParts = new();
     }
 
