@@ -13,12 +13,14 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
     {
         #region Properties
         private readonly DefaultDbContext _context;
+        private readonly IDeviceHistoryDataLayer _deviceHistoryDataLayer;
         #endregion
 
         #region Constructor
-        public ComputerDataLayer(DefaultDbContext context)
+        public ComputerDataLayer(DefaultDbContext context, IDeviceHistoryDataLayer deviceHistoryDataLayer)
         {
             _context = context;
+            _deviceHistoryDataLayer = deviceHistoryDataLayer;
         }
         #endregion
 
@@ -38,6 +40,13 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
 
             await _context.Device.AddAsync(newComputer);
             await _context.SaveChangesAsync();
+
+            await _deviceHistoryDataLayer.AddHistoryToDevice(new()
+            {
+                LogLevel = LogLevel.Information,
+                DeviceId = newComputer.Id,
+                Message = "Computer added"
+            });
 
             return TransformDeviceToComputerReadViewModel(newComputer);
         }
@@ -98,6 +107,8 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
             if (await _context.Device.Where(item => item.Id == computer.Id && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
             {
                 Device computerDatabase = await _context.Device.Where(item => item.Id == computer.Id && item.DeviceType.Id == DeviceType.Computer.Id).SingleAsync();
+                List<DeviceHistoryWriteViewModel> listDeviceHistory = GetDifferenceBetweenComputerVersion(computer, computerDatabase);
+
                 computerDatabase.Name = computer.Name;
                 computerDatabase.Ip = computer.Ip;
                 computerDatabase.Domain = computer.Domain;
@@ -113,6 +124,11 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
 
                 _context.Entry(computerDatabase).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
+
+                foreach (DeviceHistoryWriteViewModel deviceHistory in listDeviceHistory)
+                {
+                    await _deviceHistoryDataLayer.AddHistoryToDevice(deviceHistory);
+                }
 
                 return TransformDeviceToComputerReadViewModel(computerDatabase);
             }
@@ -132,6 +148,13 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
 
                 _context.Entry(device).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
+
+                await _deviceHistoryDataLayer.AddHistoryToDevice(new()
+                {
+                    LogLevel = LogLevel.Information,
+                    DeviceId = id,
+                    Message = $"New status for computer {deviceStatus}"
+                });
             }
         }
 
@@ -160,6 +183,13 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 
                 _context.Entry(device).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
+
+                await _deviceHistoryDataLayer.AddHistoryToDevice(new()
+                {
+                    LogLevel = LogLevel.Information,
+                    DeviceId = computerId,
+                    Message = $"Computer entity updated '{(device.Entity is null ? string.Empty : device.Entity.Name)}'"
+                });
             }
         }
         #endregion
@@ -187,6 +217,10 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
 
                     //Delete computer Software installed
                     await _context.Database.ExecuteSqlAsync($"DELETE FROM DeviceSoftwareInstalled WHERE DeviceId = {id.ToString()}");
+                    await _context.SaveChangesAsync();
+
+                    //Delete computer History
+                    await _context.Database.ExecuteSqlAsync($"DELETE FROM DeviceHistory WHERE DeviceId = {id.ToString()}");
                     await _context.SaveChangesAsync();
 
                     //Delete computer
@@ -260,7 +294,44 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 EntityId = device.Entity is null ? null : device.Entity.EntityId,
                 EntityName = device.Entity is null ? string.Empty : device.Entity.Name
             };
-        }        
+        }
+
+        private List<DeviceHistoryWriteViewModel> GetDifferenceBetweenComputerVersion(ComputerWriteViewModel computerNewData, Device deviceBDD)
+        {
+            List<DeviceHistoryWriteViewModel> listDeviceHistory = new();
+
+            if (computerNewData.Ip != deviceBDD.Ip)
+            {
+                listDeviceHistory.Add(new()
+                {
+                    LogLevel = LogLevel.Information,
+                    DeviceId = computerNewData.Id,
+                    Message = $"Computer Ip updated from '{computerNewData.Ip}' to '{deviceBDD.Ip}'"
+                });
+            }
+
+            if (computerNewData.OSVersion != deviceBDD.OSVersion)
+            {
+                listDeviceHistory.Add(new()
+                {
+                    LogLevel = LogLevel.Information,
+                    DeviceId = computerNewData.Id,
+                    Message = $"Computer OSVersion updated from '{computerNewData.OSVersion}' to '{deviceBDD.OSVersion}'"
+                });
+            }
+
+            if (computerNewData.UserName != deviceBDD.UserName)
+            {
+                listDeviceHistory.Add(new()
+                {
+                    LogLevel = LogLevel.Information,
+                    DeviceId = computerNewData.Id,
+                    Message = $"Computer UserName updated from '{computerNewData.UserName}' to '{deviceBDD.UserName}'"
+                });
+            }
+
+            return listDeviceHistory;
+        }
         #endregion
     }
 }
