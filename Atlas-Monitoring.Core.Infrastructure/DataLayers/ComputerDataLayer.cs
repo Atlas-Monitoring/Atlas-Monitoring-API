@@ -110,13 +110,13 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 List<DeviceHistoryWriteViewModel> listDeviceHistory = GetDifferenceBetweenComputerVersion(computer, computerDatabase);
 
                 computerDatabase.Name = computer.Name;
-                computerDatabase.Ip = computer.Ip;
+                computerDatabase.Ip = computer.Ip == string.Empty ? computerDatabase.Ip : computer.Ip;
                 computerDatabase.Domain = computer.Domain;
                 computerDatabase.MaxRam = computer.MaxRam;
                 computerDatabase.NumberOfLogicalProcessors = computer.NumberOfLogicalProcessors;
                 computerDatabase.OS = computer.OS;
                 computerDatabase.OSVersion = computer.OSVersion;
-                computerDatabase.UserName = computer.UserName;
+                computerDatabase.UserName = computer.UserName == string.Empty ? computerDatabase.UserName : computer.UserName;
                 computerDatabase.SerialNumber = computer.SerialNumber;
                 computerDatabase.Model = computer.Model;
                 computerDatabase.Manufacturer = computer.Manufacturer;
@@ -300,7 +300,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         {
             List<DeviceHistoryWriteViewModel> listDeviceHistory = new();
 
-            if (computerNewData.Ip != deviceBDD.Ip)
+            if (computerNewData.Ip != deviceBDD.Ip && computerNewData.Ip != string.Empty)
             {
                 listDeviceHistory.Add(new()
                 {
@@ -320,7 +320,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 });
             }
 
-            if (computerNewData.UserName != deviceBDD.UserName)
+            if (computerNewData.UserName != deviceBDD.UserName && computerNewData.UserName != string.Empty)
             {
                 listDeviceHistory.Add(new()
                 {
