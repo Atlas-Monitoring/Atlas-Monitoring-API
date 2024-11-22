@@ -22,69 +22,6 @@ namespace Atlas_Monitoring.Core.Infrastructure.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("Atlas_Monitoring.Core.Models.Database.AutomateLog", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("AutomateId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(240)
-                        .HasColumnType("varchar(240)")
-                        .HasDefaultValue("");
-
-                    b.Property<int>("LogLevel")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AutomateLog", (string)null);
-                });
-
-            modelBuilder.Entity("Atlas_Monitoring.Core.Models.Database.AutomateReport", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("AppName")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(60)
-                        .HasColumnType("varchar(60)")
-                        .HasDefaultValue("");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<double>("DurationInSeconds")
-                        .HasColumnType("double");
-
-                    b.Property<Guid?>("EntityId1")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("GlobalMessage")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(240)
-                        .HasColumnType("varchar(240)")
-                        .HasDefaultValue("");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EntityId1");
-
-                    b.ToTable("AutomateReport", (string)null);
-                });
-
             modelBuilder.Entity("Atlas_Monitoring.Core.Models.Database.ComputerData", b =>
                 {
                     b.Property<Guid>("Id")
@@ -459,15 +396,6 @@ namespace Atlas_Monitoring.Core.Infrastructure.Migrations
                             Password = "$2a$11$gD72tcJt3RGEgPt0v9gR4O1PPwR8Koc25ssq5g1Bg4mq8ycUwF7Sm",
                             UserName = "admin"
                         });
-                });
-
-            modelBuilder.Entity("Atlas_Monitoring.Core.Models.Database.AutomateReport", b =>
-                {
-                    b.HasOne("Atlas_Monitoring.Core.Models.Database.Entity", "EntityId")
-                        .WithMany()
-                        .HasForeignKey("EntityId1");
-
-                    b.Navigation("EntityId");
                 });
 
             modelBuilder.Entity("Atlas_Monitoring.Core.Models.Database.ComputerData", b =>
