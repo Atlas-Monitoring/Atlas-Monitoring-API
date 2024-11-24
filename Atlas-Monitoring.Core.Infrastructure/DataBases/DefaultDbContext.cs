@@ -21,6 +21,8 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataBases
         #region Public Methods
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new EntityConfiguration.AutomateLogEntityTypeConfigurations());
+            modelBuilder.ApplyConfiguration(new EntityConfiguration.AutomateReportEntityTypeConfigurations());
             modelBuilder.ApplyConfiguration(new EntityConfiguration.ComputerDataEntityTypeConfigurations());
             modelBuilder.ApplyConfiguration(new EntityConfiguration.ComputerHardDriveEntityTypeConfigurations());
             modelBuilder.ApplyConfiguration(new EntityConfiguration.DeviceEntityTypeConfigurations());
@@ -45,6 +47,8 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataBases
         #endregion
 
         #region Propriétés
+        public DbSet<AutomateLog> AutomateLog { get; set; }
+        public DbSet<AutomateReport> AutomateReport { get; set; }
         public DbSet<Device> Device { get; set; }
         public DbSet<ComputerData> ComputerData { get; set; }
         public DbSet<ComputerHardDrive> ComputerHardDrive { get; set; }

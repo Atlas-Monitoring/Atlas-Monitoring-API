@@ -4,6 +4,7 @@ using Atlas_Monitoring.Core.Infrastructure.DataBases;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Atlas_Monitoring.Core.Infrastructure.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    partial class DefaultDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241122140505_AutomateReportAndLog")]
+    partial class AutomateReportAndLog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,7 +31,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("AutomateReportId")
+                    b.Property<Guid>("AutomateId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Comment")
@@ -42,8 +45,6 @@ namespace Atlas_Monitoring.Core.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AutomateReportId");
 
                     b.ToTable("AutomateLog", (string)null);
                 });
@@ -461,17 +462,6 @@ namespace Atlas_Monitoring.Core.Infrastructure.Migrations
                             Password = "$2a$11$gD72tcJt3RGEgPt0v9gR4O1PPwR8Koc25ssq5g1Bg4mq8ycUwF7Sm",
                             UserName = "admin"
                         });
-                });
-
-            modelBuilder.Entity("Atlas_Monitoring.Core.Models.Database.AutomateLog", b =>
-                {
-                    b.HasOne("Atlas_Monitoring.Core.Models.Database.AutomateReport", "AutomateReport")
-                        .WithMany()
-                        .HasForeignKey("AutomateReportId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("AutomateReport");
                 });
 
             modelBuilder.Entity("Atlas_Monitoring.Core.Models.Database.AutomateReport", b =>

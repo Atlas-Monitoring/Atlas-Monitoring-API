@@ -82,6 +82,7 @@ builder.Services.AddDbContext<DefaultDbContext>(options =>
 });
 
 //Scope DataLayer interface
+builder.Services.AddScoped<IAutomateReportDataLayer, AutomateReportDataLayer>();
 builder.Services.AddScoped<IComputerDataDataLayer, ComputerDataDataLayer>();
 builder.Services.AddScoped<IComputerDataLayer, ComputerDataLayer>();
 builder.Services.AddScoped<IComputerPartsDataLayer, ComputerPartsDataLayer>();
@@ -93,6 +94,7 @@ builder.Services.AddScoped<IEntityDataLayer, EntityDataLayer>();
 builder.Services.AddScoped<IUserDataLayer, UserDataLayer>();
 
 //Scope Repository interface
+builder.Services.AddScoped<IAutomateReportRepository, AutomateReportRepository>();
 builder.Services.AddScoped<IComputerDataRepository, ComputerDataRepository>();
 builder.Services.AddScoped<IComputerHardDriveRepository, ComputerHardDriveRepository>();
 builder.Services.AddScoped<IComputerPartsRepository, ComputerPartsRepository>();
