@@ -1,9 +1,10 @@
-﻿using Atlas_Monitoring.Core.Interface.Application;
-using Atlas_Monitoring.Core.Models.Internal;
+﻿using Atlas_Monitoring.Core.Infrastructure.DataBases;
+using Atlas_Monitoring.Core.Interface.Application;
 using Atlas_Monitoring.Core.Models.ViewModels;
 using Atlas_Monitoring.CustomException;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Atlas_Monitoring.Controllers
 {
@@ -13,12 +14,14 @@ namespace Atlas_Monitoring.Controllers
     public class ComputersController : ControllerBase
     {
         #region Properties
+        private readonly DefaultDbContext _context;
         private readonly IComputerRepository _computerRepository;
         #endregion
 
         #region Constructor
-        public ComputersController(IComputerRepository computerRepository)
+        public ComputersController(DefaultDbContext context, IComputerRepository computerRepository)
         {
+            _context = context;
             _computerRepository = computerRepository;
         }
         #endregion
@@ -29,26 +32,38 @@ namespace Atlas_Monitoring.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<ComputerReadViewModel>> AddNewComputer(ComputerWriteViewModel newComputer)
         {
+            IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
+
             try
             {
                 ComputerReadViewModel computerDatabase = await _computerRepository.AddComputer(newComputer);
+
+                await transaction.CommitAsync();
 
                 return CreatedAtAction(nameof(AddNewComputer), new { id = computerDatabase.Id }, computerDatabase);
             }
             catch (CustomDataAlreadyExistException ex)
             {
+                await transaction.RollbackAsync();
+
                 return BadRequest(ex.Message);
             }
             catch (CustomModelException ex)
             {
+                await transaction.RollbackAsync();
+
                 return BadRequest(ex.Message);
             }
             catch (CustomDataBaseException ex)
             {
+                await transaction.RollbackAsync();
+
                 return BadRequest(ex.Message);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                await transaction.RollbackAsync();
+
                 return Problem(detail: "Internal Exception", statusCode: 500);
             }
         }
@@ -125,96 +140,38 @@ namespace Atlas_Monitoring.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<ComputerReadViewModel>> UpdateComputer(Guid id, ComputerWriteViewModel computer)
         {
+            IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
+
             try
             {
                 if (id != computer.Id) { throw new CustomModelException("Id don't match !"); }
+
+                await transaction.CommitAsync();
 
                 return Ok(await _computerRepository.UpdateComputer(computer));
             }
             catch (CustomNoContentException ex)
             {
+                await transaction.RollbackAsync();
+
                 return NoContent();
             }
             catch (CustomModelException ex)
             {
+                await transaction.RollbackAsync();
+
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return Problem(detail: "Internal Exception", statusCode: 500);
-            }
-        }
+                await transaction.RollbackAsync();
 
-        [HttpPut("{id}/{newDeviceStatus}")]
-        public async Task<ActionResult<ComputerReadViewModel>> UpdateComputerStatus(Guid id, DeviceStatus newDeviceStatus)
-        {
-            try
-            {
-                await _computerRepository.UpdateComputerStatus(id, newDeviceStatus);
-
-                return Ok();
-            }
-            catch (CustomNoContentException ex)
-            {
-                return NoContent();
-            }
-            catch (CustomModelException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return Problem(detail: "Internal Exception", statusCode: 500);
-            }
-        }
-
-        [HttpPut("AssignEntity/{computerId}/{entityId}")]
-        public async Task<ActionResult> UpdateEntityOfComputer(Guid computerId, Guid entityId)
-        {
-            try
-            {
-                await _computerRepository.UpdateEntityOfComputer(computerId, entityId);
-
-                return Ok();
-            }
-            catch (CustomNoContentException ex)
-            {
-                return NoContent();
-            }
-            catch (CustomModelException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
                 return Problem(detail: "Internal Exception", statusCode: 500);
             }
         }
         #endregion
 
         #region Delete
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteComputer(Guid id)
-        {
-            try
-            {
-                await _computerRepository.DeleteComputer(id);
-
-                return Ok();
-            }
-            catch (CustomNoContentException ex)
-            {
-                return NoContent();
-            }
-            catch (CustomModelException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return Problem(detail: "Internal Exception", statusCode: 500);
-            }
-        }
         #endregion
         #endregion
     }

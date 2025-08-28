@@ -1,28 +1,16 @@
 ﻿using Atlas_Monitoring.Core.Models.Database;
-using Atlas_Monitoring.Core.Models.Internal;
 
 namespace Atlas_Monitoring.Core.Models.ViewModels
 {
-    public class ComputerReadViewModel
+    public class ComputerReadViewModel : DeviceReadViewModel
     {
-        public Guid Id { get; set; }
-        public DeviceStatus DeviceStatus { get; set; } = DeviceStatus.New;
         public DeviceType DeviceType { get; set; } = DeviceType.Computer;
-        public Guid? EntityId { get; set; }
-        public string EntityName { get; set; } = string.Empty;
-        public string Name { get; set; } = string.Empty;
         public string Ip { get; set; } = string.Empty;
-        public string Domain { get; set; } = string.Empty;
         public double MaxRam { get; set; } = 0;
         public double NumberOfLogicalProcessors { get; set; } = 0;
         public string OS { get; set; } = string.Empty;
         public string OSVersion { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
-        public string SerialNumber { get; set; } = string.Empty;
-        public string Model { get; set; } = string.Empty;
-        public string Manufacturer { get; set; } = string.Empty;
-        public DateTime DateAdd { get; set; }
-        public DateTime DateUpdated { get; set; }
 
         public List<DeviceHardDriveViewModel> ComputerHardDrives = new();
         public List<DevicePerformanceDataViewModel> ComputerLastData = new();
@@ -30,24 +18,18 @@ namespace Atlas_Monitoring.Core.Models.ViewModels
         public List<DevicePartsReadViewModel> ComputerParts = new();
     }
 
-    public class ComputerWriteViewModel
+    public class ComputerWriteViewModel : DeviceWriteViewModel
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; } = string.Empty;
         public string Ip { get; set; } = string.Empty;
-        public string Domain { get; set; } = string.Empty;
         public double MaxRam { get; set; } = 0;
         public double NumberOfLogicalProcessors { get; set; } = 0;
         public string OS { get; set; } = string.Empty;
         public string OSVersion { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
-        public string SerialNumber { get; set; } = string.Empty;
-        public string Model { get; set; } = string.Empty;
-        public string Manufacturer { get; set; } = string.Empty;
         public DateTime DateAdd { get; set; }
         public DateTime DateUpdated { get; set; }
         public List<DeviceHardDriveViewModel> ComputerHardDrives = new();
-        public List<DevicePerformanceDataViewModel> ComputerLastData = new();
-        public List<DevicePartsReadViewModel> ComputerParts = new();
+        public DevicePerformanceDataViewModel ComputerLastData = new();
+        public List<DevicePartsWriteViewModel> ComputerParts = new();
     }
 }

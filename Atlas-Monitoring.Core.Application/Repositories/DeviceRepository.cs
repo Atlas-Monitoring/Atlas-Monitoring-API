@@ -1,5 +1,6 @@
 ﻿using Atlas_Monitoring.Core.Interface.Application;
 using Atlas_Monitoring.Core.Interface.Infrastructure;
+using Atlas_Monitoring.Core.Models.Internal;
 using Atlas_Monitoring.Core.Models.ViewModels;
 
 namespace Atlas_Monitoring.Core.Application.Repositories
@@ -8,21 +9,19 @@ namespace Atlas_Monitoring.Core.Application.Repositories
     {
         #region Properties
         private readonly IDeviceDataLayer _deviceDataLayer;
+        private readonly IDeviceHistoryDataLayer _deviceHistoryDataLayer;
         #endregion
 
         #region Constructor
-        public DeviceRepository(IDeviceDataLayer deviceDataLayer)
+        public DeviceRepository(IDeviceDataLayer deviceDataLayer, IDeviceHistoryDataLayer deviceHistoryDataLayer)
         {
             _deviceDataLayer = deviceDataLayer;
+            _deviceHistoryDataLayer = deviceHistoryDataLayer;
         }
         #endregion
 
         #region Publics Methods
         #region Create
-        public async Task<DeviceReadViewModel> CreateNewDevice(DeviceWriteViewModel newDevice)
-        {
-            return await _deviceDataLayer.CreateNewDevice(newDevice);
-        }
         #endregion
 
         #region Read
@@ -43,16 +42,35 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         #endregion
 
         #region Update
-        public async Task<DeviceReadViewModel> UpdateDevice(DeviceWriteViewModel updatedDevice)
+        public async Task UpdateDeviceStatus(Guid id, DeviceStatus deviceStatus)
         {
-            return await _deviceDataLayer.UpdateDevice(updatedDevice);
+            await _deviceDataLayer.UpdateDeviceStatus(id, deviceStatus);
+
+            await _deviceHistoryDataLayer.AddHistoryToDevice(new()
+            {
+                LogLevel = LogLevel.Information,
+                DeviceId = id,
+                Message = $"New status for device {deviceStatus}"
+            });
+        }
+
+        public async Task UpdateEntityOfDevice(Guid deviceId, Guid entityId)
+        {
+            await _deviceDataLayer.UpdateEntityOfDevice(deviceId, entityId);
+
+            await _deviceHistoryDataLayer.AddHistoryToDevice(new()
+            {
+                LogLevel = LogLevel.Information,
+                DeviceId = deviceId,
+                Message = $"Device entity updated with entityId {entityId.ToString()}"
+            });
         }
         #endregion
 
         #region Delete
-        public async Task<DeviceReadViewModel> DeleteDevice(Guid deviceId)
+        public async Task DeleteDevice(Guid deviceId)
         {
-            return await _deviceDataLayer.DeleteDevice(deviceId);
+            await _deviceDataLayer.DeleteDevice(deviceId);
         }
         #endregion
         #endregion

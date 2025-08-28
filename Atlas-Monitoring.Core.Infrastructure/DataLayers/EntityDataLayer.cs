@@ -46,7 +46,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         {
             List<Entity> listOfEntities = await _context.Entity.ToListAsync();
             List<EntityReadViewModel> listOfEntitiesViewModel = new();
-            foreach (Entity entity in listOfEntities) 
+            foreach (Entity entity in listOfEntities)
             {
                 listOfEntitiesViewModel.Add(new() { EntityId = entity.EntityId, Name = entity.Name });
             }

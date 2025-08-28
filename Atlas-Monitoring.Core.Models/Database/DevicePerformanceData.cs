@@ -1,6 +1,6 @@
 ﻿namespace Atlas_Monitoring.Core.Models.Database
 {
-    public class ComputerData
+    public class DevicePerformanceData
     {
         public Guid Id { get; set; }
         public Device Device { get; set; }

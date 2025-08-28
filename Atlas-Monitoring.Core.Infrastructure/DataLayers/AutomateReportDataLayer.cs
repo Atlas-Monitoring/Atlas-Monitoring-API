@@ -42,7 +42,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
 
                 await _context.AutomateReport.AddAsync(newBddReport);
 
-                foreach(AutomateLogWriteViewModel automateLog in newReport.ListOfLogs)
+                foreach (AutomateLogWriteViewModel automateLog in newReport.ListOfLogs)
                 {
                     AutomateLog newLog = new()
                     {

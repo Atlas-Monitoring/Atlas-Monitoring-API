@@ -6,14 +6,14 @@ using Atlas_Monitoring.CustomException;
 
 namespace Atlas_Monitoring.Core.Application.Repositories
 {
-    public class ComputerDataRepository : IComputerDataRepository
+    public class ComputerDataRepository : IDevicePerformanceDataRepository
     {
         #region Properties
-        private readonly IComputerDataDataLayer _computerDataDataLayer;
+        private readonly IDevicePerformanceDataDataLayer _computerDataDataLayer;
         #endregion
 
         #region Constructor
-        public ComputerDataRepository(IComputerDataDataLayer computerDataDataLayer)
+        public ComputerDataRepository(IDevicePerformanceDataDataLayer computerDataDataLayer)
         {
             _computerDataDataLayer = computerDataDataLayer;
         }
@@ -21,18 +21,18 @@ namespace Atlas_Monitoring.Core.Application.Repositories
 
         #region Public Methods
         #region Create
-        public async Task<ComputerData> AddComputerData(DevicePerformanceDataViewModel computerDataView)
+        public async Task<DevicePerformanceData> AddDevicePerformance(DevicePerformanceDataViewModel computerDataView)
         {
-            computerDataView = CheckComputerDataViewModel(computerDataView);
+            computerDataView = CheckDevicePerformanceDataViewModel(computerDataView);
 
-            return await _computerDataDataLayer.AddComputerData(computerDataView);
+            return await _computerDataDataLayer.AddDevicePerformance(computerDataView);
         }
         #endregion
 
         #region Read
-        public async Task<List<DevicePerformanceDataViewModel>> GetAllComputerDataOfAComputer(Guid computerId, DateTime minimumDataDate)
+        public async Task<List<DevicePerformanceDataViewModel>> GetAllDevicePerformanceDataOfADevice(Guid deviceId, DateTime minimumDataDate)
         {
-            return await _computerDataDataLayer.GetAllComputerDataOfAComputer(computerId, minimumDataDate);
+            return await _computerDataDataLayer.GetAllDevicePerformanceDataOfADevice(deviceId, minimumDataDate);
         }
         #endregion
 
@@ -41,21 +41,21 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         #endregion
 
         #region Delete
-        public async Task DeleteAllComputerDataOfAComputer(Guid computerId)
+        public async Task DeleteAllDevicePerformanceOfADevice(Guid deviceId)
         {
-            await _computerDataDataLayer.DeleteAllComputerDataOfAComputer(computerId);
+            await _computerDataDataLayer.DeleteAllDevicePerformanceOfADevice(deviceId);
         }
         #endregion
         #endregion
 
         #region Private Methods
-        private DevicePerformanceDataViewModel CheckComputerDataViewModel(DevicePerformanceDataViewModel computerDataViewModel)
+        private DevicePerformanceDataViewModel CheckDevicePerformanceDataViewModel(DevicePerformanceDataViewModel devicePerformanceDataViewModel)
         {
-            if (computerDataViewModel.ProcessorUtilityPourcent < 0) { throw new CustomModelException($"The property 'ProcessorUtilityPourcent' can't be lower than 0");  }
-            if (computerDataViewModel.MemoryUsed < 0) { throw new CustomModelException($"The property 'MemoryUsed' can't be lower than 0");  }
-            if (computerDataViewModel.UptimeSinceInSecond < 0) { throw new CustomModelException($"The property 'UptimeSinceInSecond' can't be lower than 0");  }
+            if (devicePerformanceDataViewModel.ProcessorUtilityPourcent < 0) { throw new CustomModelException($"The property 'ProcessorUtilityPourcent' can't be lower than 0"); }
+            if (devicePerformanceDataViewModel.MemoryUsed < 0) { throw new CustomModelException($"The property 'MemoryUsed' can't be lower than 0"); }
+            if (devicePerformanceDataViewModel.UptimeSinceInSecond < 0) { throw new CustomModelException($"The property 'UptimeSinceInSecond' can't be lower than 0"); }
 
-            return computerDataViewModel;
+            return devicePerformanceDataViewModel;
         }
         #endregion
     }

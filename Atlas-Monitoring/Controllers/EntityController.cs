@@ -1,6 +1,4 @@
-﻿using Atlas_Monitoring.Core.Application.Repositories;
-using Atlas_Monitoring.Core.Interface.Application;
-using Atlas_Monitoring.Core.Models.Database;
+﻿using Atlas_Monitoring.Core.Interface.Application;
 using Atlas_Monitoring.Core.Models.ViewModels;
 using Atlas_Monitoring.CustomException;
 using Microsoft.AspNetCore.Authorization;

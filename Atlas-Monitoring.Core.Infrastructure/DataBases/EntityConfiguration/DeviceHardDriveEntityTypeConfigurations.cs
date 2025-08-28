@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Atlas_Monitoring.Core.Infrastructure.DataBases.EntityConfiguration
 {
-    internal class ComputerHardDriveEntityTypeConfigurations : IEntityTypeConfiguration<ComputerHardDrive>
+    internal class DeviceHardDriveEntityTypeConfigurations : IEntityTypeConfiguration<DeviceHardDrive>
     {
-        public void Configure(EntityTypeBuilder<ComputerHardDrive> builder)
+        public void Configure(EntityTypeBuilder<DeviceHardDrive> builder)
         {
             //Define Primary Key
             builder.HasKey(item => item.Id);

@@ -43,11 +43,13 @@ builder.Services.AddSwaggerDocument(config =>
     );
 });
 
-builder.Services.AddAuthentication(cfg => {
+builder.Services.AddAuthentication(cfg =>
+{
     cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     cfg.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(x => {
+}).AddJwtBearer(x =>
+{
     x.RequireHttpsMetadata = false;
     x.SaveToken = false;
     x.TokenValidationParameters = new TokenValidationParameters
@@ -83,10 +85,10 @@ builder.Services.AddDbContext<DefaultDbContext>(options =>
 
 //Scope DataLayer interface
 builder.Services.AddScoped<IAutomateReportDataLayer, AutomateReportDataLayer>();
-builder.Services.AddScoped<IComputerDataDataLayer, ComputerDataDataLayer>();
+builder.Services.AddScoped<IDevicePerformanceDataDataLayer, DevicePerformanceDataDataLayer>();
 builder.Services.AddScoped<IComputerDataLayer, ComputerDataLayer>();
-builder.Services.AddScoped<IComputerPartsDataLayer, ComputerPartsDataLayer>();
-builder.Services.AddScoped<IComputerHardDriveDataLayer, ComputerHardDriveDataLayer>();
+builder.Services.AddScoped<IDevicePartsDataLayer, DevicePartsDataLayer>();
+builder.Services.AddScoped<IDeviceHardDriveDataLayer, DeviceHardDriveDataLayer>();
 builder.Services.AddScoped<IDeviceDataLayer, DeviceDataLayer>();
 builder.Services.AddScoped<IDeviceHistoryDataLayer, DeviceHistoryDataLayer>();
 builder.Services.AddScoped<IDeviceSoftwareInstalledDataLayer, DeviceSoftwareInstalledDataLayer>();
@@ -95,9 +97,9 @@ builder.Services.AddScoped<IUserDataLayer, UserDataLayer>();
 
 //Scope Repository interface
 builder.Services.AddScoped<IAutomateReportRepository, AutomateReportRepository>();
-builder.Services.AddScoped<IComputerDataRepository, ComputerDataRepository>();
-builder.Services.AddScoped<IComputerHardDriveRepository, ComputerHardDriveRepository>();
-builder.Services.AddScoped<IComputerPartsRepository, ComputerPartsRepository>();
+builder.Services.AddScoped<IDevicePerformanceDataRepository, ComputerDataRepository>();
+builder.Services.AddScoped<IDeviceHardDriveRepository, DeviceHardDriveRepository>();
+builder.Services.AddScoped<IDevicePartsRepository, DevicePartsRepository>();
 builder.Services.AddScoped<IComputerRepository, ComputerRepository>();
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 builder.Services.AddScoped<IDeviceHistoryRepository, DeviceHistoryRepository>();
