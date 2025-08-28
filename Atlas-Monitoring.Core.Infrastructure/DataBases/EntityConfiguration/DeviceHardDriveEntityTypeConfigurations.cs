@@ -12,7 +12,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataBases.EntityConfiguration
             builder.HasKey(item => item.Id);
 
             //Define Table name
-            builder.ToTable("ComputerHardDrive");
+            builder.ToTable("DeviceHardDrive");
 
             //Set property max length
             builder.Property(item => item.Letter).HasMaxLength(2);

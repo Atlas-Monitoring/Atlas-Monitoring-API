@@ -113,27 +113,27 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         #region Delete
         public async Task DeleteDevice(Guid deviceId)
         {
-            //Delete computer Data
-            await _context.Database.ExecuteSqlAsync($"DELETE FROM ComputerData WHERE DeviceId = {deviceId.ToString()}");
+            //Delete device performance Data
+            await _context.Database.ExecuteSqlAsync($"DELETE FROM DevicePerformanceData WHERE DeviceId = {deviceId.ToString()}");
             await _context.SaveChangesAsync();
 
-            //Delete computer hard drive
-            await _context.Database.ExecuteSqlAsync($"DELETE FROM ComputerHardDrive WHERE DeviceId = {deviceId.ToString()}");
+            //Delete device hard drive
+            await _context.Database.ExecuteSqlAsync($"DELETE FROM DeviceHardDrive WHERE DeviceId = {deviceId.ToString()}");
             await _context.SaveChangesAsync();
 
-            //Delete computer parts
+            //Delete device parts
             await _context.Database.ExecuteSqlAsync($"DELETE FROM DeviceParts WHERE DeviceId = {deviceId.ToString()}");
             await _context.SaveChangesAsync();
 
-            //Delete computer Software installed
+            //Delete device Software installed
             await _context.Database.ExecuteSqlAsync($"DELETE FROM DeviceSoftwareInstalled WHERE DeviceId = {deviceId.ToString()}");
             await _context.SaveChangesAsync();
 
-            //Delete computer History
+            //Delete device History
             await _context.Database.ExecuteSqlAsync($"DELETE FROM DeviceHistory WHERE DeviceId = {deviceId.ToString()}");
             await _context.SaveChangesAsync();
 
-            //Delete computer
+            //Delete device
             int numberOfDeletions = await _context.Database.ExecuteSqlAsync($"DELETE FROM Device WHERE Id = {deviceId.ToString()}");
             await _context.SaveChangesAsync();
 

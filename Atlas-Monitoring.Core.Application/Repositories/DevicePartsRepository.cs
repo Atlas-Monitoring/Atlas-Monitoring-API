@@ -11,17 +11,17 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         #endregion
 
         #region Constructor
-        public DevicePartsRepository(IDevicePartsDataLayer computerPartsDataLayer)
+        public DevicePartsRepository(IDevicePartsDataLayer devicePartsDataLayer)
         {
-            _devicePartsDataLayer = computerPartsDataLayer;
+            _devicePartsDataLayer = devicePartsDataLayer;
         }
         #endregion
 
         #region Public Methods
         #region Read
-        public async Task<List<DevicePartsReadViewModel>> GetAllDevicePartByDeviceId(Guid computerId)
+        public async Task<List<DevicePartsReadViewModel>> GetAllDevicePartByDeviceId(Guid deviceId)
         {
-            return await _devicePartsDataLayer.GetAllDevicePartByDeviceId(computerId);
+            return await _devicePartsDataLayer.GetAllDevicePartByDeviceId(deviceId);
         }
         #endregion
 

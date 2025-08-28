@@ -24,7 +24,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         #region Create
         public async Task<DevicePartsReadViewModel> AddDevicePart(DevicePartsWriteViewModel devicePart)
         {
-            if (!await _context.Device.Where(item => item.Id == devicePart.DeviceId && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
+            if (!await _context.Device.Where(item => item.Id == devicePart.DeviceId).AnyAsync())
             {
                 throw new CustomDataBaseException($"Device Id '{devicePart.DeviceId}' don't exist");
             }
@@ -60,7 +60,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
 
         public async Task<bool> CheckIfDevicePartODeviceExist(DevicePartsWriteViewModel devicePart)
         {
-            return await _context.DeviceParts.Where(item => item.Device.Id == devicePart.DeviceId && item.Name == devicePart.Name && item.Device.DeviceType.Id == DeviceType.Computer.Id).AnyAsync();
+            return await _context.DeviceParts.Where(item => item.Device.Id == devicePart.DeviceId && item.Name == devicePart.Name).AnyAsync();
         }
         #endregion
 

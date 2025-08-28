@@ -12,7 +12,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataBases.EntityConfiguration
             builder.HasKey(item => item.Id);
 
             //Define Table name
-            builder.ToTable("ComputerData");
+            builder.ToTable("DevicePerformanceData");
 
             //Set default value for properties
             builder.Property(item => item.ProcessorUtilityPourcent).HasDefaultValue(0);

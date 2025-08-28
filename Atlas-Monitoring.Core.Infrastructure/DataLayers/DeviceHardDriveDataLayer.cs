@@ -24,7 +24,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         #region Create
         public async Task<DeviceHardDriveViewModel> AddDeviceHardDrive(DeviceHardDriveViewModel deviceHardDriveView)
         {
-            if (!await _context.Device.Where(item => item.Id == deviceHardDriveView.DeviceId && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
+            if (!await _context.Device.Where(item => item.Id == deviceHardDriveView.DeviceId).AnyAsync())
             {
                 throw new CustomDataBaseException($"Device Id '{deviceHardDriveView.DeviceId}' don't exist");
             }
