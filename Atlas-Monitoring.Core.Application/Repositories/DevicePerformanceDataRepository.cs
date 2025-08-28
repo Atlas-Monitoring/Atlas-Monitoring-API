@@ -6,14 +6,14 @@ using Atlas_Monitoring.CustomException;
 
 namespace Atlas_Monitoring.Core.Application.Repositories
 {
-    public class ComputerDataRepository : IDevicePerformanceDataRepository
+    public class DevicePerformanceDataRepository : IDevicePerformanceDataRepository
     {
         #region Properties
         private readonly IDevicePerformanceDataDataLayer _computerDataDataLayer;
         #endregion
 
         #region Constructor
-        public ComputerDataRepository(IDevicePerformanceDataDataLayer computerDataDataLayer)
+        public DevicePerformanceDataRepository(IDevicePerformanceDataDataLayer computerDataDataLayer)
         {
             _computerDataDataLayer = computerDataDataLayer;
         }

@@ -97,7 +97,7 @@ builder.Services.AddScoped<IUserDataLayer, UserDataLayer>();
 
 //Scope Repository interface
 builder.Services.AddScoped<IAutomateReportRepository, AutomateReportRepository>();
-builder.Services.AddScoped<IDevicePerformanceDataRepository, ComputerDataRepository>();
+builder.Services.AddScoped<IDevicePerformanceDataRepository, DevicePerformanceDataRepository>();
 builder.Services.AddScoped<IDeviceHardDriveRepository, DeviceHardDriveRepository>();
 builder.Services.AddScoped<IDevicePartsRepository, DevicePartsRepository>();
 builder.Services.AddScoped<IComputerRepository, ComputerRepository>();
