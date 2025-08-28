@@ -21,7 +21,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
 
         #region Public Methods
         #region Create
-        public async Task<ComputerHardDrive> AddComputerHardDrive(ComputerHardDriveViewModel computerHardDriveView)
+        public async Task<ComputerHardDrive> AddComputerHardDrive(DeviceHardDriveViewModel computerHardDriveView)
         {
             computerHardDriveView = CheckComputerHardDriveViewModel(computerHardDriveView);
 
@@ -30,7 +30,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         #endregion
 
         #region Read
-        public async Task<List<ComputerHardDriveViewModel>> GetAllComputerHardDriveOfAComputer(Guid computerId)
+        public async Task<List<DeviceHardDriveViewModel>> GetAllComputerHardDriveOfAComputer(Guid computerId)
         {
             return await _computerHardDriveDataLayer.GetAllComputerHardDriveOfAComputer(computerId);
         }
@@ -42,7 +42,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         #endregion
 
         #region Update
-        public async Task<ComputerHardDriveViewModel> UpdateOneHardDrive(ComputerHardDriveViewModel computerHardDriveViewModel)
+        public async Task<DeviceHardDriveViewModel> UpdateOneHardDrive(DeviceHardDriveViewModel computerHardDriveViewModel)
         {
             return await _computerHardDriveDataLayer.UpdateOneHardDrive(computerHardDriveViewModel);
         }
@@ -62,7 +62,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         #endregion
 
         #region Private Methods
-        private ComputerHardDriveViewModel CheckComputerHardDriveViewModel(ComputerHardDriveViewModel computerHardDriveViewModel)
+        private DeviceHardDriveViewModel CheckComputerHardDriveViewModel(DeviceHardDriveViewModel computerHardDriveViewModel)
         {
             if (computerHardDriveViewModel.Letter.Length > 2) { throw new CustomModelException($"Property 'Name' would be truncate (2 characters max)"); }
             if (computerHardDriveViewModel.TotalSpace < 0) { throw new CustomModelException($"The property 'TotalSpace' can't be lower than 0"); }

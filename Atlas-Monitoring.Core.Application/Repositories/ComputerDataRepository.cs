@@ -21,7 +21,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
 
         #region Public Methods
         #region Create
-        public async Task<ComputerData> AddComputerData(ComputerDataViewModel computerDataView)
+        public async Task<ComputerData> AddComputerData(DevicePerformanceDataViewModel computerDataView)
         {
             computerDataView = CheckComputerDataViewModel(computerDataView);
 
@@ -30,7 +30,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         #endregion
 
         #region Read
-        public async Task<List<ComputerDataViewModel>> GetAllComputerDataOfAComputer(Guid computerId, DateTime minimumDataDate)
+        public async Task<List<DevicePerformanceDataViewModel>> GetAllComputerDataOfAComputer(Guid computerId, DateTime minimumDataDate)
         {
             return await _computerDataDataLayer.GetAllComputerDataOfAComputer(computerId, minimumDataDate);
         }
@@ -49,7 +49,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         #endregion
 
         #region Private Methods
-        private ComputerDataViewModel CheckComputerDataViewModel(ComputerDataViewModel computerDataViewModel)
+        private DevicePerformanceDataViewModel CheckComputerDataViewModel(DevicePerformanceDataViewModel computerDataViewModel)
         {
             if (computerDataViewModel.ProcessorUtilityPourcent < 0) { throw new CustomModelException($"The property 'ProcessorUtilityPourcent' can't be lower than 0");  }
             if (computerDataViewModel.MemoryUsed < 0) { throw new CustomModelException($"The property 'MemoryUsed' can't be lower than 0");  }

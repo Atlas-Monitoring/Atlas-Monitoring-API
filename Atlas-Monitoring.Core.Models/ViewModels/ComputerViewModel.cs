@@ -24,8 +24,8 @@ namespace Atlas_Monitoring.Core.Models.ViewModels
         public DateTime DateAdd { get; set; }
         public DateTime DateUpdated { get; set; }
 
-        public List<ComputerHardDriveViewModel> ComputerHardDrives = new();
-        public List<ComputerDataViewModel> ComputerLastData = new();
+        public List<DeviceHardDriveViewModel> ComputerHardDrives = new();
+        public List<DevicePerformanceDataViewModel> ComputerLastData = new();
         public List<DeviceHistoryReadViewModel> ComputerHistory = new();
         public List<DevicePartsReadViewModel> ComputerParts = new();
     }
@@ -46,5 +46,8 @@ namespace Atlas_Monitoring.Core.Models.ViewModels
         public string Manufacturer { get; set; } = string.Empty;
         public DateTime DateAdd { get; set; }
         public DateTime DateUpdated { get; set; }
+        public List<DeviceHardDriveViewModel> ComputerHardDrives = new();
+        public List<DevicePerformanceDataViewModel> ComputerLastData = new();
+        public List<DevicePartsReadViewModel> ComputerParts = new();
     }
 }

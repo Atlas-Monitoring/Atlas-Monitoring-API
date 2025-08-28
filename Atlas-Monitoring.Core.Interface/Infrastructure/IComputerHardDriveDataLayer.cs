@@ -11,7 +11,7 @@ namespace Atlas_Monitoring.Core.Interface.Infrastructure
         /// </summary>
         /// <param name="computerHardDriveView">Object ComputerHardDriveViewModel</param>
         /// <returns>Object ComputerHardDrive</returns>
-        public Task<ComputerHardDrive> AddComputerHardDrive(ComputerHardDriveViewModel computerHardDriveView);
+        public Task<ComputerHardDrive> AddComputerHardDrive(DeviceHardDriveViewModel computerHardDriveView);
         #endregion
 
         #region Read 
@@ -20,7 +20,7 @@ namespace Atlas_Monitoring.Core.Interface.Infrastructure
         /// </summary>
         /// <param name="computerId">Id of computer</param>
         /// <returns>List of ComputerHardDriveViewModel</returns>
-        public Task<List<ComputerHardDriveViewModel>> GetAllComputerHardDriveOfAComputer(Guid computerId);
+        public Task<List<DeviceHardDriveViewModel>> GetAllComputerHardDriveOfAComputer(Guid computerId);
 
         /// <summary>
         /// Get computer HardDrive from computer Id and Letter of HardDrive
@@ -37,7 +37,7 @@ namespace Atlas_Monitoring.Core.Interface.Infrastructure
         /// </summary>
         /// <param name="computerHardDriveViewModel">Object ComputerHardDriveViewModel</param>
         /// <returns>Object ComputerHardDriveViewModel</returns>
-        public Task<ComputerHardDriveViewModel> UpdateOneHardDrive(ComputerHardDriveViewModel computerHardDriveViewModel);
+        public Task<DeviceHardDriveViewModel> UpdateOneHardDrive(DeviceHardDriveViewModel computerHardDriveViewModel);
         #endregion
 
         #region Delete

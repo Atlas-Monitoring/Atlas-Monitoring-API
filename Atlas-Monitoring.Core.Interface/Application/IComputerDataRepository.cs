@@ -11,7 +11,7 @@ namespace Atlas_Monitoring.Core.Interface.Application
         /// </summary>
         /// <param name="computerDataView">Object ComputerDataViewModel</param>
         /// <returns>Object ComputerData</returns>
-        public Task<ComputerData> AddComputerData(ComputerDataViewModel computerDataView);
+        public Task<ComputerData> AddComputerData(DevicePerformanceDataViewModel computerDataView);
         #endregion
 
         #region Read 
@@ -21,7 +21,7 @@ namespace Atlas_Monitoring.Core.Interface.Application
         /// <param name="computerId">Id of computer</param>
         /// <param name="minimumDataDate">Minimum data date</param>
         /// <returns>List of ComputerDataViewModel</returns>
-        public Task<List<ComputerDataViewModel>> GetAllComputerDataOfAComputer(Guid computerId, DateTime minimumDataDate);
+        public Task<List<DevicePerformanceDataViewModel>> GetAllComputerDataOfAComputer(Guid computerId, DateTime minimumDataDate);
         #endregion
 
         #region Update

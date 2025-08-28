@@ -154,7 +154,6 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 DeviceTypeId = device.DeviceType.Id,
                 DeviceTypeName = device.DeviceType.Name,
                 Name = device.Name,
-                Ip = device.Ip,
                 Domain = device.Domain,
                 UserName = device.UserName,
                 SerialNumber = device.SerialNumber,

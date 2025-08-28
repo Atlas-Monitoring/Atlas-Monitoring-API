@@ -22,7 +22,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
 
         #region Public Methods
         #region Create
-        public async Task<ComputerHardDrive> AddComputerHardDrive(ComputerHardDriveViewModel computerHardDriveView)
+        public async Task<ComputerHardDrive> AddComputerHardDrive(DeviceHardDriveViewModel computerHardDriveView)
         {
             if (!await _context.Device.Where(item => item.Id == computerHardDriveView.ComputerId && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
             {
@@ -48,10 +48,10 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         #endregion
 
         #region Read
-        public async Task<List<ComputerHardDriveViewModel>> GetAllComputerHardDriveOfAComputer(Guid computerId)
+        public async Task<List<DeviceHardDriveViewModel>> GetAllComputerHardDriveOfAComputer(Guid computerId)
         {
             List<ComputerHardDrive> listComputerHardDrive = await _context.ComputerHardDrive.Where(item => item.Device.Id == computerId).ToListAsync();
-            List<ComputerHardDriveViewModel> listComputerHardDriveViewModel = new();
+            List<DeviceHardDriveViewModel> listComputerHardDriveViewModel = new();
 
             foreach (ComputerHardDrive computerHardDrive in listComputerHardDrive)
             {
@@ -77,7 +77,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         #endregion
 
         #region Update
-        public async Task<ComputerHardDriveViewModel> UpdateOneHardDrive(ComputerHardDriveViewModel computerHardDriveViewModel)
+        public async Task<DeviceHardDriveViewModel> UpdateOneHardDrive(DeviceHardDriveViewModel computerHardDriveViewModel)
         {
             ComputerHardDrive computerHardDrive = await _context.ComputerHardDrive.Where(item => item.Id == computerHardDriveViewModel.Id).Include(item => item.Device).SingleAsync();
             computerHardDrive.Letter = computerHardDriveViewModel.Letter;
@@ -123,7 +123,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         #endregion
 
         #region Private Methods
-        private ComputerHardDriveViewModel TransformComputerHardDriveToComputerHardDriveViewModel(ComputerHardDrive computerHardDrive)
+        private DeviceHardDriveViewModel TransformComputerHardDriveToComputerHardDriveViewModel(ComputerHardDrive computerHardDrive)
         {
             return new()
             {

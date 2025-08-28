@@ -22,14 +22,14 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
 
         #region Public Methods
         #region Create
-        public async Task<ComputerData> AddComputerData(ComputerDataViewModel computerDataView)
+        public async Task<ComputerData> AddComputerData(DevicePerformanceDataViewModel computerDataView)
         {
-            if (await _context.Device.Where(item => item.Id == computerDataView.ComputerId).AnyAsync())
+            if (await _context.Device.Where(item => item.Id == computerDataView.DeviceId).AnyAsync())
             {
                 ComputerData computerData = new()
                 {
                     Id = Guid.NewGuid(),
-                    Device = await _context.Device.Where(item => item.Id == computerDataView.ComputerId).SingleAsync(),
+                    Device = await _context.Device.Where(item => item.Id == computerDataView.DeviceId).SingleAsync(),
                     DateAdd = DateTime.Now,
                     ProcessorUtilityPourcent = computerDataView.ProcessorUtilityPourcent,
                     MemoryUsed = computerDataView.MemoryUsed,
@@ -43,17 +43,17 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
             }
             else
             {
-                throw new CustomNoContentException($"Computer with id '{computerDataView.ComputerId}' don't exist !");
+                throw new CustomNoContentException($"Computer with id '{computerDataView.DeviceId}' don't exist !");
             }
         }
         #endregion
 
         #region Read
-        public async Task<List<ComputerDataViewModel>> GetAllComputerDataOfAComputer(Guid computerId, DateTime minimumDataDate)
+        public async Task<List<DevicePerformanceDataViewModel>> GetAllComputerDataOfAComputer(Guid computerId, DateTime minimumDataDate)
         {
             List<ComputerData> listComputerData = await _context.ComputerData.Where(item => item.Device.Id == computerId && item.DateAdd >= minimumDataDate).ToListAsync();
 
-            List<ComputerDataViewModel> listComputerDataViewModel = new();
+            List<DevicePerformanceDataViewModel> listComputerDataViewModel = new();
 
             foreach (ComputerData computerData in listComputerData)
             {
@@ -89,12 +89,12 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         /// </summary>
         /// <param name="computerData">Object ComputerData</param>
         /// <returns>ComputerDataViewModel Object</returns>
-        private ComputerDataViewModel TransformComputerDataToComputerDataViewModel(ComputerData computerData)
+        private DevicePerformanceDataViewModel TransformComputerDataToComputerDataViewModel(ComputerData computerData)
         {
             return new()
             {
                 Id = computerData.Id,
-                ComputerId = computerData.Id,
+                DeviceId = computerData.Id,
                 DateAdd = computerData.DateAdd,
                 ProcessorUtilityPourcent = computerData.ProcessorUtilityPourcent,
                 MemoryUsed = computerData.MemoryUsed,
