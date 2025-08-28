@@ -32,7 +32,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         #region Update
         public async Task<DeviceHardDriveViewModel> SyncOneHardDrive(DeviceHardDriveViewModel deviceHardDriveView)
         {
-            deviceHardDriveView = CheckComputerHardDriveViewModel(deviceHardDriveView);
+            deviceHardDriveView = CheckDeviceHardDriveViewModel(deviceHardDriveView);
 
             deviceHardDriveView.Id = await _deviceHardDriveDataLayer.GetGuidOfDeviceHardDriveIfExist(deviceHardDriveView.DeviceId, deviceHardDriveView.Letter);
 
@@ -61,7 +61,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         #endregion
 
         #region Private Methods
-        private DeviceHardDriveViewModel CheckComputerHardDriveViewModel(DeviceHardDriveViewModel deviceHardDriveViewModel)
+        private DeviceHardDriveViewModel CheckDeviceHardDriveViewModel(DeviceHardDriveViewModel deviceHardDriveViewModel)
         {
             if (deviceHardDriveViewModel.Letter.Length > 2) { throw new CustomModelException($"Property 'Name' would be truncate (2 characters max)"); }
             if (deviceHardDriveViewModel.TotalSpace < 0) { throw new CustomModelException($"The property 'TotalSpace' can't be lower than 0"); }
