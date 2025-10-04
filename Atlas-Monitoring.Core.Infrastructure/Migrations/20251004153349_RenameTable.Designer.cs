@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Atlas_Monitoring.Core.Infrastructure.Migrations
 {
     [DbContext(typeof(DefaultDbContext))]
-    [Migration("20251004134009_PerformanceData")]
-    partial class PerformanceData
+    [Migration("20251004153349_RenameTable")]
+    partial class RenameTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
