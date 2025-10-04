@@ -7,12 +7,12 @@ namespace Atlas_Monitoring.Core.Models.ViewModels
     {
         public Guid Id { get; set; }
         public DeviceStatus DeviceStatus { get; set; } = DeviceStatus.New;
+        public Guid? EntityId { get; set; }
+        public string EntityName { get; set; } = string.Empty;
         public int DeviceTypeId { get; set; } = DeviceType.Undefined.Id;
         public string DeviceTypeName { get; set; } = DeviceType.Undefined.Name;
         public string Name { get; set; } = string.Empty;
-        public string Ip { get; set; } = string.Empty;
         public string Domain { get; set; } = string.Empty;
-        public string UserName { get; set; } = string.Empty;
         public string SerialNumber { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
         public string Manufacturer { get; set; } = string.Empty;
@@ -24,15 +24,12 @@ namespace Atlas_Monitoring.Core.Models.ViewModels
     {
         public Guid Id { get; set; }
         public DeviceStatus DeviceStatus { get; set; } = DeviceStatus.New;
+        public Guid? EntityId { get; set; }
         public int DeviceTypeId { get; set; } = DeviceType.Undefined.Id;
         public string Name { get; set; } = string.Empty;
-        public string Ip { get; set; } = string.Empty;
         public string Domain { get; set; } = string.Empty;
-        public string UserName { get; set; } = string.Empty;
         public string SerialNumber { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
         public string Manufacturer { get; set; } = string.Empty;
-        public DateTime DateAdd { get; set; }
-        public DateTime DateUpdated { get; set; }
     }
 }

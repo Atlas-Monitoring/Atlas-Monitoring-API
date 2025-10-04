@@ -3,7 +3,7 @@ using Atlas_Monitoring.Core.Models.ViewModels;
 
 namespace Atlas_Monitoring.Core.Interface.Application
 {
-    public interface IComputerDataRepository
+    public interface IDevicePerformanceDataRepository
     {
         #region Create
         /// <summary>
@@ -11,17 +11,17 @@ namespace Atlas_Monitoring.Core.Interface.Application
         /// </summary>
         /// <param name="computerDataView">Object ComputerDataViewModel</param>
         /// <returns>Object ComputerData</returns>
-        public Task<ComputerData> AddComputerData(ComputerDataViewModel computerDataView);
+        public Task<DevicePerformanceData> AddDevicePerformance(DevicePerformanceDataViewModel computerDataView);
         #endregion
 
         #region Read 
         /// <summary>
-        /// Get all ComputerData of a computer
+        /// Get all DevicePerformanceData of a device
         /// </summary>
-        /// <param name="computerId">Id of computer</param>
+        /// <param name="deviceId">Id of device</param>
         /// <param name="minimumDataDate">Minimum data date</param>
-        /// <returns>List of ComputerDataViewModel</returns>
-        public Task<List<ComputerDataViewModel>> GetAllComputerDataOfAComputer(Guid computerId, DateTime minimumDataDate);
+        /// <returns>List of DevicePerformanceDataViewModel</returns>
+        public Task<List<DevicePerformanceDataViewModel>> GetAllDevicePerformanceDataOfADevice(Guid deviceId, DateTime minimumDataDate);
         #endregion
 
         #region Update
@@ -30,10 +30,10 @@ namespace Atlas_Monitoring.Core.Interface.Application
 
         #region Delete 
         /// <summary>
-        /// Delete All ComputerData of a Computer
+        /// Delete All DevicePerformanceData of a Device
         /// </summary>
-        /// <param name="computerId">Computer ID</param>
-        public Task DeleteAllComputerDataOfAComputer(Guid computerId);
+        /// <param name="deviceId">Device ID</param>
+        public Task DeleteAllDevicePerformanceOfADevice(Guid deviceId);
         #endregion
     }
 }

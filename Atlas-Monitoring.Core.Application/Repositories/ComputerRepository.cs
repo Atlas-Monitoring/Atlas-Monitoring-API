@@ -1,6 +1,5 @@
 ﻿using Atlas_Monitoring.Core.Interface.Application;
 using Atlas_Monitoring.Core.Interface.Infrastructure;
-using Atlas_Monitoring.Core.Models.Internal;
 using Atlas_Monitoring.Core.Models.ViewModels;
 using Atlas_Monitoring.CustomException;
 
@@ -10,16 +9,22 @@ namespace Atlas_Monitoring.Core.Application.Repositories
     {
         #region Properties
         private readonly IComputerDataLayer _computerDataLayer;
-        private readonly IComputerHardDriveRepository _computerHardDriveRepository;
-        private readonly IComputerDataRepository _computerDataRepository;
+        private readonly IDeviceHardDriveRepository _deviceHardDriveRepository;
+        private readonly IDevicePerformanceDataRepository _devicePerformanceDataRepository;
+        private readonly IDevicePartsRepository _devicePartsRepository;
+        private readonly IDeviceSoftwareInstalledRepository _deviceSoftwareInstalledRepository;
+        private readonly IDeviceHistoryRepository _deviceHistoryRepository;
         #endregion
 
         #region Constructor
-        public ComputerRepository(IComputerDataLayer computerDataLayer, IComputerHardDriveRepository computerHardDriveRepository, IComputerDataRepository computerDataRepository)
+        public ComputerRepository(IComputerDataLayer computerDataLayer, IDeviceHardDriveRepository deviceHardDriveRepository, IDevicePerformanceDataRepository deviceDataRepository, IDevicePartsRepository devicePartsRepository, IDeviceSoftwareInstalledRepository deviceSoftwareInstalledRepository, IDeviceHistoryRepository deviceHistoryRepository)
         {
             _computerDataLayer = computerDataLayer;
-            _computerHardDriveRepository = computerHardDriveRepository;
-            _computerDataRepository = computerDataRepository;
+            _deviceHardDriveRepository = deviceHardDriveRepository;
+            _devicePerformanceDataRepository = deviceDataRepository;
+            _devicePartsRepository = devicePartsRepository;
+            _deviceSoftwareInstalledRepository = deviceSoftwareInstalledRepository;
+            _deviceHistoryRepository = deviceHistoryRepository;
         }
         #endregion
 
@@ -39,8 +44,32 @@ namespace Atlas_Monitoring.Core.Application.Repositories
                 //Add Computer
                 ComputerReadViewModel computerBdd = await _computerDataLayer.AddComputer(computer);
 
+                //Add Computer Hard Drive
+                foreach (DeviceHardDriveViewModel deviceHardDriveViewModel in computer.ComputerHardDrives)
+                {
+                    deviceHardDriveViewModel.DeviceId = computerBdd.Id;
+
+                    await _deviceHardDriveRepository.SyncOneHardDrive(deviceHardDriveViewModel);
+                }
+
+                //Add Computer Performance Data
+                computer.ComputerLastData.DeviceId = computerBdd.Id;
+                await _devicePerformanceDataRepository.AddDevicePerformance(computer.ComputerLastData);
+
+                //Add Computer Software Installed
+                computer.SoftwareInstalled.ForEach(item => item.DeviceId = computerBdd.Id);
+                await _deviceSoftwareInstalledRepository.SyncSoftwareOfDevice(computer.SoftwareInstalled);
+
+                //Add Computer Part
+                foreach (DevicePartsWriteViewModel devicePartsWriteViewModel in computer.ComputerParts)
+                {
+                    devicePartsWriteViewModel.DeviceId = computerBdd.Id;
+
+                    await _devicePartsRepository.SyncDevicePart(devicePartsWriteViewModel);
+                }
+
                 return computerBdd;
-            }            
+            }
         }
         #endregion
 
@@ -52,7 +81,14 @@ namespace Atlas_Monitoring.Core.Application.Repositories
 
         public async Task<ComputerReadViewModel> GetOneComputerById(Guid id)
         {
-            return await _computerDataLayer.GetOneComputerById(id);
+            ComputerReadViewModel computer = await _computerDataLayer.GetOneComputerById(id);
+            computer.ComputerHardDrives = await _deviceHardDriveRepository.GetAllDeviceHardDriveOfADevice(id);
+            computer.ComputerLastData = await _devicePerformanceDataRepository.GetAllDevicePerformanceDataOfADevice(id, DateTime.Now.AddDays(-1)); //Get last 24 hours of data
+            computer.ComputerHistory = await _deviceHistoryRepository.GetHistoryOfADevice(id);
+            computer.ComputerParts = await _devicePartsRepository.GetAllDevicePartByDeviceId(id);
+            computer.SoftwareInstalled = await _deviceSoftwareInstalledRepository.ListOfSoftwareOnDevice(id);
+
+            return computer;
         }
 
         public async Task<Guid> GetIdOfComputer(string computerName, string computerSerialNumber)
@@ -66,27 +102,35 @@ namespace Atlas_Monitoring.Core.Application.Repositories
         {
             computer = CheckComputerWriteViewModel(computer);
 
+            //Sync Computer Hard Drive
+            foreach (DeviceHardDriveViewModel deviceHardDriveViewModel in computer.ComputerHardDrives)
+            {
+                deviceHardDriveViewModel.DeviceId = computer.Id;
+
+                await _deviceHardDriveRepository.SyncOneHardDrive(deviceHardDriveViewModel);
+            }
+
+            //Add Computer Performance Data
+            computer.ComputerLastData.DeviceId = computer.Id;
+            await _devicePerformanceDataRepository.AddDevicePerformance(computer.ComputerLastData);
+
+            //Sync Computer Software Installed
+            computer.SoftwareInstalled.ForEach(item => item.DeviceId = computer.Id);
+            await _deviceSoftwareInstalledRepository.SyncSoftwareOfDevice(computer.SoftwareInstalled);
+
+            //Sync Computer Part
+            foreach (DevicePartsWriteViewModel devicePartsWriteViewModel in computer.ComputerParts)
+            {
+                devicePartsWriteViewModel.DeviceId = computer.Id;
+
+                await _devicePartsRepository.SyncDevicePart(devicePartsWriteViewModel);
+            }
+
             return await _computerDataLayer.UpdateComputer(computer);
-        }
-
-        public async Task UpdateComputerStatus(Guid id, DeviceStatus deviceStatus)
-        {
-            await _computerDataLayer.UpdateComputerStatus(id, deviceStatus);
-        }
-
-        public async Task UpdateEntityOfComputer(Guid computerId, Guid entityId)
-        {
-            await _computerDataLayer.UpdateEntityOfComputer(computerId, entityId);
         }
         #endregion
 
         #region Delete
-        public async Task DeleteComputer(Guid id)
-        {
-            await _computerHardDriveRepository.DeleteAllComputerHardDriveOfAComputer(id);
-            await _computerDataRepository.DeleteAllComputerDataOfAComputer(id);
-            await _computerDataLayer.DeleteComputer(id);
-        }
         #endregion
         #endregion
 
@@ -119,7 +163,7 @@ namespace Atlas_Monitoring.Core.Application.Repositories
             computer.DateUpdated = DateTime.Now;
 
             return computer;
-        }        
+        }
         #endregion
     }
 }

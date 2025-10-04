@@ -1,6 +1,6 @@
 ﻿namespace Atlas_Monitoring.Core.Models.Database
 {
-    public class ComputerHardDrive
+    public class DeviceHardDrive
     {
         public Guid Id { get; set; }
         public Device Device { get; set; }

@@ -1,5 +1,4 @@
-﻿using Atlas_Monitoring.Core.Models.Internal;
-using Atlas_Monitoring.Core.Models.ViewModels;
+﻿using Atlas_Monitoring.Core.Models.ViewModels;
 
 namespace Atlas_Monitoring.Core.Interface.Infrastructure
 {
@@ -52,28 +51,9 @@ namespace Atlas_Monitoring.Core.Interface.Infrastructure
         /// <param name="computer">Object computer</param>
         /// <returns>Computer data updated</returns>
         public Task<ComputerReadViewModel> UpdateComputer(ComputerWriteViewModel computer);
-
-        /// <summary>
-        /// Update status of computer
-        /// </summary>
-        /// <param name="id">Id of computer</param>
-        /// <param name="deviceStatus">Status of the device</param>
-        public Task UpdateComputerStatus(Guid id, DeviceStatus deviceStatus);
-
-        /// <summary>
-        /// Update Entity of computer
-        /// </summary>
-        /// <param name="computerId">Id of computer</param>
-        /// <param name="entityId">Id of entity</param>
-        public Task UpdateEntityOfComputer(Guid computerId, Guid entityId);
         #endregion
 
         #region Delete
-        /// <summary>
-        /// Delete computer data
-        /// </summary>
-        /// <param name="id">Id of the computer</param>
-        public Task DeleteComputer(Guid id);
         #endregion
     }
 }

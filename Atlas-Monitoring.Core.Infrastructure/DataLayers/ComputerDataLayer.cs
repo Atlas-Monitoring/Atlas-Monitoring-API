@@ -71,7 +71,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         {
             if (await _context.Device.Where(item => item.Id == id && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
             {
-                Device computer = await _context.Device.Where(item => item.Id == id && item.DeviceType.Id == DeviceType.Computer.Id).SingleAsync();
+                Device computer = await _context.Device.Where(item => item.Id == id && item.DeviceType.Id == DeviceType.Computer.Id).Include(x => x.Entity).SingleAsync();
 
                 return TransformDeviceToComputerReadViewModel(computer);
             }
@@ -137,113 +137,9 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 throw new CustomNoContentException($"Computer with id {computer.Id} don't exist");
             }
         }
-
-        public async Task UpdateComputerStatus(Guid id, DeviceStatus deviceStatus)
-        {
-            if (await _context.Device.Where(item => item.Id == id && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
-            {
-                Device device = await _context.Device.Where(item => item.Id == id && item.DeviceType.Id == DeviceType.Computer.Id).SingleAsync();
-
-                device.DeviceStatus = deviceStatus;
-
-                _context.Entry(device).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-
-                await _deviceHistoryDataLayer.AddHistoryToDevice(new()
-                {
-                    LogLevel = LogLevel.Information,
-                    DeviceId = id,
-                    Message = $"New status for computer {deviceStatus}"
-                });
-            }
-        }
-
-        public async Task UpdateEntityOfComputer(Guid computerId, Guid entityId)
-        {
-            if (!await _context.Device.Where(item => item.Id == computerId && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
-            {
-                throw new CustomNoContentException($"Computer with id {computerId} don't exist");
-            }
-            else if (entityId != Guid.Empty && !await _context.Entity.Where(item => item.EntityId == entityId).AnyAsync())
-            {
-                throw new CustomNoContentException($"Entity with id {entityId} don't exist");
-            }
-            else
-            {
-                Device device = await _context.Device.Where(item => item.Id == computerId && item.DeviceType.Id == DeviceType.Computer.Id).Include(item => item.Entity).SingleAsync();
-
-                if (entityId == Guid.Empty)
-                {
-                    device.Entity = null;
-                }
-                else
-                {
-                    device.Entity = await _context.Entity.Where(item => item.EntityId == entityId).SingleAsync();
-                }
-                
-                _context.Entry(device).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-
-                await _deviceHistoryDataLayer.AddHistoryToDevice(new()
-                {
-                    LogLevel = LogLevel.Information,
-                    DeviceId = computerId,
-                    Message = $"Computer entity updated '{(device.Entity is null ? string.Empty : device.Entity.Name)}'"
-                });
-            }
-        }
         #endregion
 
         #region Delete
-        public async Task DeleteComputer(Guid id)
-        {
-            var transaction = await _context.Database.BeginTransactionAsync();
-
-            try
-            {
-                if (await _context.Device.Where(item => item.Id == id && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
-                {
-                    //Delete computer Data
-                    await _context.Database.ExecuteSqlAsync($"DELETE FROM ComputerData WHERE DeviceId = {id.ToString()}");
-                    await _context.SaveChangesAsync();
-
-                    //Delete computer hard drive
-                    await _context.Database.ExecuteSqlAsync($"DELETE FROM ComputerHardDrive WHERE DeviceId = {id.ToString()}");
-                    await _context.SaveChangesAsync();
-
-                    //Delete computer parts
-                    await _context.Database.ExecuteSqlAsync($"DELETE FROM DeviceParts WHERE DeviceId = {id.ToString()}");
-                    await _context.SaveChangesAsync();
-
-                    //Delete computer Software installed
-                    await _context.Database.ExecuteSqlAsync($"DELETE FROM DeviceSoftwareInstalled WHERE DeviceId = {id.ToString()}");
-                    await _context.SaveChangesAsync();
-
-                    //Delete computer History
-                    await _context.Database.ExecuteSqlAsync($"DELETE FROM DeviceHistory WHERE DeviceId = {id.ToString()}");
-                    await _context.SaveChangesAsync();
-
-                    //Delete computer
-                    int numberOfDeletions =  await _context.Database.ExecuteSqlAsync($"DELETE FROM Device WHERE Id = {id.ToString()} AND DeviceTypeId = {DeviceType.Computer.Id}");
-                    await _context.SaveChangesAsync();
-
-                    if (numberOfDeletions > 1) { throw new CustomDataBaseException($"Delete abort due to a number of device deleted > 1 ({numberOfDeletions})"); }
-
-                    transaction.Commit();
-                }
-                else
-                {
-                    throw new CustomNoContentException($"Computer with id {id} don't exist");
-                }
-
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex) when (ex is not CustomNoContentException && ex is not CustomDataBaseException)
-            {
-                transaction.Rollback();
-                throw new CustomDataBaseException($"Exception with database : {ex.Message}");
-            }
-        }
         #endregion
         #endregion
 

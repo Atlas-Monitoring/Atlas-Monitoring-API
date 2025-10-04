@@ -1,16 +1,11 @@
-﻿using Atlas_Monitoring.Core.Models.ViewModels;
+﻿using Atlas_Monitoring.Core.Models.Internal;
+using Atlas_Monitoring.Core.Models.ViewModels;
 
 namespace Atlas_Monitoring.Core.Interface.Application
 {
     public interface IDeviceRepository
     {
         #region Create
-        /// <summary>
-        /// Create a new device
-        /// </summary>
-        /// <param name="newDevice">Object DeviceWriteViewModel</param>
-        /// <returns>Object DeviceReadViewModel</returns>
-        public Task<DeviceReadViewModel> CreateNewDevice(DeviceWriteViewModel newDevice);
         #endregion
 
         #region Read
@@ -36,11 +31,18 @@ namespace Atlas_Monitoring.Core.Interface.Application
 
         #region Update
         /// <summary>
-        /// Update device
+        /// Update status of a device
         /// </summary>
-        /// <param name="updatedDevice">Object DeviceWriteViewModel</param>
-        /// <returns>Object DeviceReadViewModel</returns>
-        public Task<DeviceReadViewModel> UpdateDevice(DeviceWriteViewModel updatedDevice);
+        /// <param name="id">Id of device</param>
+        /// <param name="deviceStatus">Status of the device</param>
+        public Task UpdateDeviceStatus(Guid id, DeviceStatus deviceStatus);
+
+        /// <summary>
+        /// Update Entity of device
+        /// </summary>
+        /// <param name="deviceId">Id of device</param>
+        /// <param name="entityId">Id of entity</param>
+        public Task UpdateEntityOfDevice(Guid deviceId, Guid entityId);
         #endregion
 
         #region Delete
@@ -48,8 +50,7 @@ namespace Atlas_Monitoring.Core.Interface.Application
         /// Update device
         /// </summary>
         /// <param name="deviceId">GUID of the device</param>
-        /// <returns>List of Object DeviceReadViewModel</returns>
-        public Task<DeviceReadViewModel> DeleteDevice(Guid deviceId);
+        public Task DeleteDevice(Guid deviceId);
         #endregion
     }
 }

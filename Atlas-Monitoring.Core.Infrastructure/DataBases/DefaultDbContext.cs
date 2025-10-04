@@ -23,8 +23,8 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataBases
         {
             modelBuilder.ApplyConfiguration(new EntityConfiguration.AutomateLogEntityTypeConfigurations());
             modelBuilder.ApplyConfiguration(new EntityConfiguration.AutomateReportEntityTypeConfigurations());
-            modelBuilder.ApplyConfiguration(new EntityConfiguration.ComputerDataEntityTypeConfigurations());
-            modelBuilder.ApplyConfiguration(new EntityConfiguration.ComputerHardDriveEntityTypeConfigurations());
+            modelBuilder.ApplyConfiguration(new EntityConfiguration.DevicePerformanceDataEntityTypeConfigurations());
+            modelBuilder.ApplyConfiguration(new EntityConfiguration.DeviceHardDriveEntityTypeConfigurations());
             modelBuilder.ApplyConfiguration(new EntityConfiguration.DeviceEntityTypeConfigurations());
             modelBuilder.ApplyConfiguration(new EntityConfiguration.DeviceHistoryEntityTypeConfigurations());
             modelBuilder.ApplyConfiguration(new EntityConfiguration.DevicePartsEntityTypeConfigurations());
@@ -50,8 +50,8 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataBases
         public DbSet<AutomateLog> AutomateLog { get; set; }
         public DbSet<AutomateReport> AutomateReport { get; set; }
         public DbSet<Device> Device { get; set; }
-        public DbSet<ComputerData> ComputerData { get; set; }
-        public DbSet<ComputerHardDrive> ComputerHardDrive { get; set; }
+        public DbSet<DevicePerformanceData> DevicePerformanceData { get; set; }
+        public DbSet<DeviceHardDrive> DeviceHardDrive { get; set; }
         public DbSet<DeviceHistory> DeviceHistory { get; set; }
         public DbSet<DeviceParts> DeviceParts { get; set; }
         public DbSet<DeviceSoftwareInstalled> DeviceSoftwareInstalled { get; set; }

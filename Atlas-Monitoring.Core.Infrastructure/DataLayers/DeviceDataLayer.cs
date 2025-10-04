@@ -1,10 +1,10 @@
 ﻿using Atlas_Monitoring.Core.Infrastructure.DataBases;
 using Atlas_Monitoring.Core.Interface.Infrastructure;
 using Atlas_Monitoring.Core.Models.Database;
+using Atlas_Monitoring.Core.Models.Internal;
 using Atlas_Monitoring.Core.Models.ViewModels;
 using Atlas_Monitoring.CustomException;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
 {
@@ -23,32 +23,6 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
 
         #region Publics Methods
         #region Create
-        public async Task<DeviceReadViewModel> CreateNewDevice(DeviceWriteViewModel newDevice)
-        {
-            Device newDeviceBDD = new()
-            {
-                Id = Guid.NewGuid(),
-                DeviceStatus = newDevice.DeviceStatus,
-                DeviceType = _context.DeviceType.Where(item => item.Id == newDevice.DeviceTypeId).Single(),
-                Name = newDevice.Name,
-                Ip = newDevice.Ip,
-                Domain = newDevice.Domain,
-                UserName = newDevice.UserName,
-                SerialNumber = newDevice.SerialNumber,
-                Model = newDevice.Model,
-                Manufacturer = newDevice.Manufacturer,
-                DateAdd = DateTime.Now,
-                DateUpdated = DateTime.Now
-            };
-
-            EntityEntry deviceTypeEntry = _context.Entry(newDeviceBDD.DeviceType);
-            deviceTypeEntry.State = EntityState.Unchanged;
-
-            await _context.Device.AddAsync(newDeviceBDD);
-            await _context.SaveChangesAsync();
-
-            return TransformModelToViewModel(newDeviceBDD);
-        }
         #endregion
 
         #region Read
@@ -94,52 +68,76 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         #endregion
 
         #region Update
-        public async Task<DeviceReadViewModel> UpdateDevice(DeviceWriteViewModel updatedDevice)
+        public async Task UpdateDeviceStatus(Guid id, DeviceStatus deviceStatus)
         {
-            if (await _context.Device.Where(item => item.Id == updatedDevice.Id && item.DeviceType.Id != DeviceType.Computer.Id && item.DeviceType.Id != DeviceType.Server.Id).AnyAsync())
+            if (await _context.Device.Where(item => item.Id == id).AnyAsync())
             {
-                Device deviceBDD = await _context.Device.Where(item => item.Id == updatedDevice.Id).Include(x => x.DeviceType).SingleAsync();
+                Device device = await _context.Device.Where(item => item.Id == id).SingleAsync();
 
-                deviceBDD.DeviceStatus = updatedDevice.DeviceStatus;
-                deviceBDD.DeviceType = _context.DeviceType.Where(item => item.Id == updatedDevice.DeviceTypeId).Single();
-                deviceBDD.Name = updatedDevice.Name;
-                deviceBDD.Ip = updatedDevice.Ip;
-                deviceBDD.Domain = updatedDevice.Domain;
-                deviceBDD.UserName = updatedDevice.UserName;
-                deviceBDD.SerialNumber = updatedDevice.SerialNumber;
-                deviceBDD.Model = updatedDevice.Model;
-                deviceBDD.Manufacturer = updatedDevice.Manufacturer;
-                deviceBDD.DateUpdated = DateTime.Now;
+                device.DeviceStatus = deviceStatus;
 
-                _context.Entry(deviceBDD).State = EntityState.Modified;
+                _context.Entry(device).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
+            }
+        }
 
-                return TransformModelToViewModel(deviceBDD);
+        public async Task UpdateEntityOfDevice(Guid deviceId, Guid entityId)
+        {
+            if (!await _context.Device.Where(item => item.Id == deviceId).AnyAsync())
+            {
+                throw new CustomNoContentException($"Device with id {deviceId} don't exist");
+            }
+            else if (entityId != Guid.Empty && !await _context.Entity.Where(item => item.EntityId == entityId).AnyAsync())
+            {
+                throw new CustomNoContentException($"Entity with id {entityId} don't exist");
             }
             else
             {
-                throw new CustomNoContentException($"No device with id {updatedDevice.Id.ToString()} found !");
+                Device device = await _context.Device.Where(item => item.Id == deviceId).Include(item => item.Entity).SingleAsync();
+
+                if (entityId == Guid.Empty)
+                {
+                    device.Entity = null;
+                }
+                else
+                {
+                    device.Entity = await _context.Entity.Where(item => item.EntityId == entityId).SingleAsync();
+                }
+
+                _context.Entry(device).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
             }
         }
         #endregion
 
         #region Delete
-        public async Task<DeviceReadViewModel> DeleteDevice(Guid deviceId)
+        public async Task DeleteDevice(Guid deviceId)
         {
-            if (await _context.Device.Where(item => item.Id == deviceId && item.DeviceType.Id != DeviceType.Computer.Id && item.DeviceType.Id != DeviceType.Server.Id).AnyAsync())
-            {
-                Device deviceBDD = await _context.Device.Where(item => item.Id == deviceId).SingleAsync();
+            //Delete device performance Data
+            await _context.Database.ExecuteSqlAsync($"DELETE FROM DevicePerformanceData WHERE DeviceId = {deviceId.ToString()}");
+            await _context.SaveChangesAsync();
 
-                _context.Device.Remove(deviceBDD);
+            //Delete device hard drive
+            await _context.Database.ExecuteSqlAsync($"DELETE FROM DeviceHardDrive WHERE DeviceId = {deviceId.ToString()}");
+            await _context.SaveChangesAsync();
 
-                await _context.SaveChangesAsync();
+            //Delete device parts
+            await _context.Database.ExecuteSqlAsync($"DELETE FROM DeviceParts WHERE DeviceId = {deviceId.ToString()}");
+            await _context.SaveChangesAsync();
 
-                return TransformModelToViewModel(deviceBDD);
-            }
-            else
-            {
-                throw new CustomNoContentException($"No device with id {deviceId.ToString()} found !");
-            }
+            //Delete device Software installed
+            await _context.Database.ExecuteSqlAsync($"DELETE FROM DeviceSoftwareInstalled WHERE DeviceId = {deviceId.ToString()}");
+            await _context.SaveChangesAsync();
+
+            //Delete device History
+            await _context.Database.ExecuteSqlAsync($"DELETE FROM DeviceHistory WHERE DeviceId = {deviceId.ToString()}");
+            await _context.SaveChangesAsync();
+
+            //Delete device
+            int numberOfDeletions = await _context.Database.ExecuteSqlAsync($"DELETE FROM Device WHERE Id = {deviceId.ToString()}");
+            await _context.SaveChangesAsync();
+
+            if (numberOfDeletions > 1) { throw new CustomDataBaseException($"Delete abort due to a number of device deleted > 1 ({numberOfDeletions})"); }
         }
         #endregion
         #endregion
@@ -154,14 +152,14 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 DeviceTypeId = device.DeviceType.Id,
                 DeviceTypeName = device.DeviceType.Name,
                 Name = device.Name,
-                Ip = device.Ip,
                 Domain = device.Domain,
-                UserName = device.UserName,
                 SerialNumber = device.SerialNumber,
                 Model = device.Model,
                 Manufacturer = device.Manufacturer,
                 DateAdd = device.DateAdd,
-                DateUpdated = device.DateUpdated                
+                DateUpdated = device.DateUpdated,
+                EntityId = device.Entity.EntityId,
+                EntityName = device.Entity.Name
             };
         }
         #endregion

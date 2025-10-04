@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
 {
-    public class ComputerPartsDataLayer : IComputerPartsDataLayer
+    public class DevicePartsDataLayer : IDevicePartsDataLayer
     {
         #region Properties
         private readonly DefaultDbContext _context;
         #endregion
 
         #region Constructor
-        public ComputerPartsDataLayer(DefaultDbContext context)
+        public DevicePartsDataLayer(DefaultDbContext context)
         {
             _context = context;
         }
@@ -22,19 +22,19 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
 
         #region Publics Methods
         #region Create
-        public async Task<DevicePartsReadViewModel> AddComputerPart(DevicePartsWriteViewModel computerPart)
+        public async Task<DevicePartsReadViewModel> AddDevicePart(DevicePartsWriteViewModel devicePart)
         {
-            if (!await _context.Device.Where(item => item.Id == computerPart.DeviceId && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
+            if (!await _context.Device.Where(item => item.Id == devicePart.DeviceId).AnyAsync())
             {
-                throw new CustomDataBaseException($"Computer Id '{computerPart.DeviceId}' don't exist");
+                throw new CustomDataBaseException($"Device Id '{devicePart.DeviceId}' don't exist");
             }
 
             DeviceParts newDevicePart = new()
             {
                 Id = Guid.NewGuid(),
-                Device = await _context.Device.Where(item => item.Id == computerPart.DeviceId).SingleAsync(),
-                Name = computerPart.Name,
-                Labels = computerPart.Labels
+                Device = await _context.Device.Where(item => item.Id == devicePart.DeviceId).SingleAsync(),
+                Name = devicePart.Name,
+                Labels = devicePart.Labels
             };
 
             await _context.DeviceParts.AddAsync(newDevicePart);
@@ -45,30 +45,30 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         #endregion
 
         #region Read
-        public async Task<List<DevicePartsReadViewModel>> GetAllComputerPartByComputerId(Guid computerId)
+        public async Task<List<DevicePartsReadViewModel>> GetAllDevicePartByDeviceId(Guid deviceId)
         {
-            List<DeviceParts> listeDeviceParts = await _context.DeviceParts.Where(item => item.Device.Id == computerId).Include(item => item.Device).ToListAsync();
+            List<DeviceParts> listeDeviceParts = await _context.DeviceParts.Where(item => item.Device.Id == deviceId).Include(item => item.Device).ToListAsync();
             List<DevicePartsReadViewModel> listeDevicePartsReadModel = new();
 
-            foreach (DeviceParts deviceParts in listeDeviceParts) 
-            { 
+            foreach (DeviceParts deviceParts in listeDeviceParts)
+            {
                 listeDevicePartsReadModel.Add(TransformDevicePartToDevicePartViewModel(deviceParts));
             }
 
             return listeDevicePartsReadModel;
         }
 
-        public async Task<bool> CheckIfComputerPartOfComputerExist(DevicePartsWriteViewModel computerPart)
+        public async Task<bool> CheckIfDevicePartODeviceExist(DevicePartsWriteViewModel devicePart)
         {
-            return await _context.DeviceParts.Where(item => item.Device.Id == computerPart.DeviceId && item.Name == computerPart.Name && item.Device.DeviceType.Id == DeviceType.Computer.Id).AnyAsync();
+            return await _context.DeviceParts.Where(item => item.Device.Id == devicePart.DeviceId && item.Name == devicePart.Name).AnyAsync();
         }
         #endregion
 
         #region Update
-        public async Task<DevicePartsReadViewModel> UpdateComputerPart(DevicePartsWriteViewModel computerPart)
+        public async Task<DevicePartsReadViewModel> UpdateDevicePart(DevicePartsWriteViewModel devicePart)
         {
-            DeviceParts devicePartsBDD = await _context.DeviceParts.Where(item => item.Device.Id == computerPart.DeviceId && item.Name == computerPart.Name).Include(item => item.Device).SingleAsync();
-            devicePartsBDD.Labels = computerPart.Labels;
+            DeviceParts devicePartsBDD = await _context.DeviceParts.Where(item => item.Device.Id == devicePart.DeviceId && item.Name == devicePart.Name).Include(item => item.Device).SingleAsync();
+            devicePartsBDD.Labels = devicePart.Labels;
 
             _context.Entry(devicePartsBDD).State = EntityState.Modified;
             await _context.SaveChangesAsync();

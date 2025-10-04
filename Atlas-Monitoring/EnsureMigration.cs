@@ -1,5 +1,4 @@
-﻿using Atlas_Monitoring.Core.Infrastructure.DataBases;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Atlas_Monitoring
 {

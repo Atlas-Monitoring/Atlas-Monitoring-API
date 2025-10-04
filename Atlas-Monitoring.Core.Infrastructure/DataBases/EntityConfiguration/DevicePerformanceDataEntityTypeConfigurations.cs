@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Atlas_Monitoring.Core.Infrastructure.DataBases.EntityConfiguration
 {
-    internal class ComputerDataEntityTypeConfigurations : IEntityTypeConfiguration<ComputerData>
+    internal class DevicePerformanceDataEntityTypeConfigurations : IEntityTypeConfiguration<DevicePerformanceData>
     {
-        public void Configure(EntityTypeBuilder<ComputerData> builder)
+        public void Configure(EntityTypeBuilder<DevicePerformanceData> builder)
         {
             //Define Primary Key
             builder.HasKey(item => item.Id);
 
             //Define Table name
-            builder.ToTable("ComputerData");
+            builder.ToTable("DevicePerformanceData");
 
             //Set default value for properties
             builder.Property(item => item.ProcessorUtilityPourcent).HasDefaultValue(0);
