@@ -71,7 +71,7 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
         {
             if (await _context.Device.Where(item => item.Id == id && item.DeviceType.Id == DeviceType.Computer.Id).AnyAsync())
             {
-                Device computer = await _context.Device.Where(item => item.Id == id && item.DeviceType.Id == DeviceType.Computer.Id).SingleAsync();
+                Device computer = await _context.Device.Where(item => item.Id == id && item.DeviceType.Id == DeviceType.Computer.Id).Include(x => x.Entity).SingleAsync();
 
                 return TransformDeviceToComputerReadViewModel(computer);
             }

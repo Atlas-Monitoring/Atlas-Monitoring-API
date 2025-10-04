@@ -12,10 +12,11 @@ namespace Atlas_Monitoring.Core.Models.ViewModels
         public string OSVersion { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
 
-        public List<DeviceHardDriveViewModel> ComputerHardDrives = new();
-        public List<DevicePerformanceDataViewModel> ComputerLastData = new();
-        public List<DeviceHistoryReadViewModel> ComputerHistory = new();
-        public List<DevicePartsReadViewModel> ComputerParts = new();
+        public List<DeviceHardDriveViewModel> ComputerHardDrives { get; set; } = new();
+        public List<DevicePerformanceDataViewModel> ComputerLastData { get; set; } = new();
+        public List<DeviceHistoryReadViewModel> ComputerHistory { get; set; } = new();
+        public List<DevicePartsReadViewModel> ComputerParts { get; set; } = new();
+        public List<DeviceSoftwareInstalledReadViewModel> SoftwareInstalled { get; set; } = new();
     }
 
     public class ComputerWriteViewModel : DeviceWriteViewModel
@@ -28,8 +29,9 @@ namespace Atlas_Monitoring.Core.Models.ViewModels
         public string UserName { get; set; } = string.Empty;
         public DateTime DateAdd { get; set; }
         public DateTime DateUpdated { get; set; }
-        public List<DeviceHardDriveViewModel> ComputerHardDrives = new();
-        public DevicePerformanceDataViewModel ComputerLastData = new();
-        public List<DevicePartsWriteViewModel> ComputerParts = new();
+        public List<DeviceHardDriveViewModel> ComputerHardDrives { get; set; } = new();
+        public DevicePerformanceDataViewModel ComputerLastData { get; set; } = new();
+        public List<DevicePartsWriteViewModel> ComputerParts { get; set; } = new();
+        public List<DeviceSoftwareInstalledWriteViewModel> SoftwareInstalled { get; set; } = new();
     }
 }

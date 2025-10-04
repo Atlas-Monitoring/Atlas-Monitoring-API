@@ -157,7 +157,9 @@ namespace Atlas_Monitoring.Core.Infrastructure.DataLayers
                 Model = device.Model,
                 Manufacturer = device.Manufacturer,
                 DateAdd = device.DateAdd,
-                DateUpdated = device.DateUpdated
+                DateUpdated = device.DateUpdated,
+                EntityId = device.Entity.EntityId,
+                EntityName = device.Entity.Name
             };
         }
         #endregion

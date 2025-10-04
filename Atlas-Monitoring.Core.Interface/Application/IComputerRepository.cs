@@ -9,7 +9,7 @@ namespace Atlas_Monitoring.Core.Interface.Application
         /// Add a new computer to the DataBase
         /// </summary>
         /// <param name="computer">Computer</param>
-        /// <returns>New object computer</returns>
+        ///<returns>New object computer</returns>
         public Task<ComputerReadViewModel> AddComputer(ComputerWriteViewModel computer);
         #endregion
 

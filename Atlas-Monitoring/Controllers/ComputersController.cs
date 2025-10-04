@@ -146,9 +146,11 @@ namespace Atlas_Monitoring.Controllers
             {
                 if (id != computer.Id) { throw new CustomModelException("Id don't match !"); }
 
+                await _computerRepository.UpdateComputer(computer);
+
                 await transaction.CommitAsync();
 
-                return Ok(await _computerRepository.UpdateComputer(computer));
+                return Ok();
             }
             catch (CustomNoContentException ex)
             {
