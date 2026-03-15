@@ -3,6 +3,7 @@ using Atlas_Monitoring.Core.Models.ViewModels;
 using Atlas_Monitoring.CustomException;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace Atlas_Monitoring.Controllers
 {
@@ -89,7 +90,7 @@ namespace Atlas_Monitoring.Controllers
 
                 return Ok();
             }
-            catch (CustomNoContentException ex)
+            catch (CustomNoContentException)
             {
                 return NoContent();
             }
@@ -97,8 +98,13 @@ namespace Atlas_Monitoring.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (CustomDataBaseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
+                Log.Error(ex, ex.Message);
                 return Problem(detail: "Internal Exception", statusCode: 500);
             }
         }
